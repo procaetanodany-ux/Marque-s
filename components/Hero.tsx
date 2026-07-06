@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import MagneticButton from "./MagneticButton";
 
 /* Hero kinetic — structure inspirée du composant 21st.dev « Hero — Bold Urban »
-   (clip-path diagonal, barre d'accent, stat en callout), restylé MARQUE-S. */
+   (clip-path diagonal, barre d'accent, stat en callout), restylé SORI. */
 
 function KineticLine({
   text,
@@ -116,7 +116,7 @@ export default function Hero() {
             <path id="circlePath" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" />
           </defs>
           <text className="fill-paper text-[10.5px] font-bold tracking-[0.22em]">
-            <textPath href="#circlePath">ÉDITION LIMITÉE ★ MARQUE-S ★ DROP 003 ★</textPath>
+            <textPath href="#circlePath">ÉDITION LIMITÉE ★ SORI ★ DROP 003</textPath>
           </text>
         </svg>
         <span className="font-display text-[clamp(30px,4vw,48px)] text-acid">S</span>

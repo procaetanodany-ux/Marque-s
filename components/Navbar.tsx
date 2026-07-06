@@ -66,9 +66,9 @@ export default function Navbar() {
       <a
         href="#top"
         className="hover-glitch font-display text-[clamp(20px,2.4vw,26px)] uppercase tracking-[0.04em] no-underline"
-        aria-label="MARQUE-S, retour en haut"
+        aria-label="SORI, retour en haut"
       >
-        MARQUE-S<sup className="text-[0.5em] text-acid">®</sup>
+        SORI<sup className="text-[0.5em] text-acid">®</sup>
       </a>
 
       <nav aria-label="Navigation principale" className="hidden gap-10 md:flex">

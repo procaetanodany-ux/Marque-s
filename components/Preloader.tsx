@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const LETTERS = "MARQUE-S".split("");
+const LETTERS = "SORI".split("");
 
 export default function Preloader() {
   const [done, setDone] = useState(false);

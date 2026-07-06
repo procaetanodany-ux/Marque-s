@@ -34,14 +34,14 @@ export default function Footer() {
   return (
     <footer className="border-t-2 border-paper">
       <BigMarquee
-        items={Array(6).fill("MARQUE-S® —")}
+        items={Array(8).fill("SORI® —")}
         variant="outline"
         duration={36}
       />
       <div className="grid gap-10 border-t-2 border-inksoft px-4 py-10 md:grid-cols-[2fr_1fr_1fr] md:px-12">
         <div>
           <p className="font-display text-[28px] uppercase">
-            MARQUE-S<sup className="text-[0.5em] text-acid">®</sup>
+            SORI<sup className="text-[0.5em] text-acid">®</sup>
           </p>
           <p className="mt-1.5 text-sm text-dim">Porte la rue. Pas la mode.</p>
         </div>
@@ -70,7 +70,7 @@ export default function Footer() {
         </div>
       </div>
       <p className="border-t border-inksoft px-4 py-5 text-[13px] text-dim md:px-12">
-        © 2026 MARQUE-S. Tous droits réservés. Fabriqué dur, porté fort.
+        © 2026 SORI. Tous droits réservés. Fabriqué dur, porté fort.
       </p>
     </footer>
   );

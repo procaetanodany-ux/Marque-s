@@ -19,9 +19,9 @@ const epilogue = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "MARQUE-S® — Streetwear brut. Éditions limitées.",
+  title: "SORI® — Streetwear brut. Éditions limitées.",
   description:
-    "MARQUE-S. Streetwear brut, coupé pour la rue. Drops en édition limitée — quand c'est parti, c'est parti.",
+    "SORI. Streetwear brut, coupé pour la rue. Drops en édition limitée — quand c'est parti, c'est parti.",
 };
 
 export default function RootLayout({

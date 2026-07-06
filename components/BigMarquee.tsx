@@ -1,5 +1,5 @@
 /* Marquee double piste — adapté du composant 21st.dev « Marquee » (samke),
-   restylé MARQUE-S : Anton, bordures 2px, variantes acide/contour. */
+   restylé SORI : Anton, bordures 2px, variantes acide/contour. */
 export default function BigMarquee({
   items,
   variant = "acid",
