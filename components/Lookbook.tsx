@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { looks } from "@/lib/data";
+import { withBase } from "@/lib/basePath";
 
 /* Lookbook : le scroll vertical pilote un défilement horizontal (section sticky). */
 export default function Lookbook() {
@@ -27,9 +28,20 @@ export default function Lookbook() {
               <div
                 className={`pattern-${look.pattern} relative grid aspect-[3/4] place-items-center overflow-hidden border-2 border-paper transition-colors duration-150 hover:border-acid`}
               >
-                <span className="text-outline font-display text-[clamp(48px,6vw,88px)] opacity-80">
-                  {look.num}
-                </span>
+                {look.image ? (
+                  <img
+                    src={withBase(look.image)}
+                    alt={look.imageAlt ?? look.caption}
+                    width={1152}
+                    height={922}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                ) : (
+                  <span className="text-outline font-display text-[clamp(48px,6vw,88px)] opacity-80">
+                    {look.num}
+                  </span>
+                )}
                 <span className="absolute bottom-4 left-4 bg-acid px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-ink">
                   Drop 003
                 </span>

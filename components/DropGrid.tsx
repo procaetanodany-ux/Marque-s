@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { products } from "@/lib/data";
+import { withBase } from "@/lib/basePath";
 import ProductArt from "./ProductArt";
 
 export default function DropGrid() {
@@ -49,12 +50,33 @@ export default function DropGrid() {
                 p.featured ? "min-h-[320px] flex-1" : "aspect-[1/0.85]"
               }`}
             >
-              <ProductArt
-                art={p.art}
-                className="w-[55%] opacity-90 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-[-4deg] group-hover:scale-110"
-              />
-              <span className="absolute left-4 top-3 font-display text-[28px] opacity-35">{p.num}</span>
-              <span className="absolute bottom-3 right-4 translate-y-8 text-[11px] font-bold uppercase tracking-[0.14em] opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+              {p.image ? (
+                <img
+                  src={withBase(p.image)}
+                  alt={p.imageAlt ?? p.name}
+                  width={1152}
+                  height={922}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                />
+              ) : (
+                <ProductArt
+                  art={p.art}
+                  className="w-[55%] opacity-90 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-[-4deg] group-hover:scale-110"
+                />
+              )}
+              <span
+                className={`absolute left-4 top-3 font-display text-[28px] ${
+                  p.image ? "bg-ink px-2 text-paper" : "opacity-35"
+                }`}
+              >
+                {p.num}
+              </span>
+              <span
+                className={`absolute bottom-3 right-4 translate-y-8 text-[11px] font-bold uppercase tracking-[0.14em] opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 ${
+                  p.image ? "bg-acid px-2 py-1 text-ink" : ""
+                }`}
+              >
                 Drop 12.07 — 10:00
               </span>
             </div>
