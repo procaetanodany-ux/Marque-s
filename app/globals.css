@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0a0a0a;
+  --color-inksoft: #161616;
+  --color-paper: #f2f0ea;
+  --color-dim: #c9c7c0;
+  --color-acid: #d8f000;
+  --font-display: var(--font-anton), Impact, sans-serif;
+  --font-body: var(--font-epilogue), system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-ink);
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-acid);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-acid);
+  outline-offset: 3px;
+}
+
+/* Curseur custom : on masque le natif seulement sur pointeur fin */
+@media (pointer: fine) {
+  .has-cursor,
+  .has-cursor a,
+  .has-cursor button,
+  .has-cursor input {
+    cursor: none;
+  }
+}
+
+/* Texte contour (stroke) */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 2.5px var(--color-paper);
+}
+.text-outline-soft {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--color-inksoft);
+}
+
+/* Marquee — technique double piste (adaptée du composant 21st.dev "Marquee" de samke) */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+@keyframes marquee2 {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(0%); }
+}
+.animate-marquee {
+  animation: marquee var(--marquee-duration, 24s) linear infinite;
+}
+.animate-marquee2 {
+  animation: marquee2 var(--marquee-duration, 24s) linear infinite;
+}
+.marquee-reverse .animate-marquee {
+  animation-direction: reverse;
+}
+.marquee-reverse .animate-marquee2 {
+  animation-direction: reverse;
+}
+
+/* Badge rotatif */
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 16s linear infinite;
+}
+
+/* Grille du hero */
+.hero-grid-bg {
+  background-image:
+    linear-gradient(var(--color-inksoft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-inksoft) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse at 30% 40%, black 30%, transparent 75%);
+}
+
+/* Motifs lookbook */
+.pattern-1 { background: repeating-linear-gradient(45deg, var(--color-ink) 0 14px, var(--color-inksoft) 14px 28px); }
+.pattern-2 { background: radial-gradient(circle at 30% 30%, var(--color-inksoft) 0 22%, var(--color-ink) 23%); background-size: 48px 48px; }
+.pattern-3 { background: repeating-linear-gradient(0deg, var(--color-ink) 0 18px, var(--color-inksoft) 18px 20px); }
+.pattern-4 { background: repeating-conic-gradient(var(--color-ink) 0 25%, var(--color-inksoft) 0 50%); background-size: 56px 56px; }
+.pattern-5 { background: linear-gradient(135deg, var(--color-inksoft), var(--color-ink) 65%); }
+
+/* Glitch du logo au survol */
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(2px, -1px); }
+  60% { transform: translate(-1px, -1px); }
+  80% { transform: translate(1px, 1px); }
+}
+.hover-glitch:hover {
+  animation: glitch 0.3s steps(2) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee2,
+  .animate-spin-slow,
+  .hover-glitch:hover {
+    animation: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

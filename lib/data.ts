@@ -1,0 +1,28 @@
+export type Product = {
+  num: string;
+  name: string;
+  spec: string;
+  price: string;
+  edition: string;
+  art: "peak" | "house" | "cross" | "flag" | "grid" | "star";
+  featured?: boolean;
+};
+
+export const DROP_DATE = "2026-07-12T10:00:00+02:00";
+
+export const products: Product[] = [
+  { num: "01", name: "Hoodie « Béton »", spec: "Molleton 480 g/m² — coupe boxy", price: "89 €", edition: "×150 ex.", art: "peak" },
+  { num: "02", name: "Veste « Chantier »", spec: "Canvas déperlant — poches utilitaires oversize", price: "159 €", edition: "×80 ex.", art: "house", featured: true },
+  { num: "03", name: "Tee « Goudron »", spec: "Jersey 240 g/m² — sérigraphie dos", price: "45 €", edition: "×200 ex.", art: "cross" },
+  { num: "04", name: "Cargo « Périph »", spec: "Ripstop — jambe large, 8 poches", price: "119 €", edition: "×120 ex.", art: "flag" },
+  { num: "05", name: "Bob « Bitume »", spec: "Nylon — logo brodé ton sur ton", price: "39 €", edition: "×100 ex.", art: "grid" },
+  { num: "06", name: "Pack complet", spec: "Les 5 pièces + tote sérigraphié", price: "399 €", edition: "×25 ex.", art: "star" },
+];
+
+export const looks = [
+  { num: "001", caption: "Hoodie Béton × Cargo Périph", pattern: 1 },
+  { num: "002", caption: "Veste Chantier, dos", pattern: 2 },
+  { num: "003", caption: "Tee Goudron, sérigraphie", pattern: 3 },
+  { num: "004", caption: "Bob Bitume, détail", pattern: 4 },
+  { num: "005", caption: "Full fit, drop 003", pattern: 5 },
+];
