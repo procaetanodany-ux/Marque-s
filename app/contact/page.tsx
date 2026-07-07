@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/content/site";
 import PageHeader from "@/components/PageHeader";
+import ContactForm from "@/components/ContactForm";
 import Newsletter from "@/components/Newsletter";
 
 export const metadata: Metadata = {
@@ -35,18 +36,21 @@ export default function ContactPage() {
       <section className="grid gap-12 px-4 pb-20 md:grid-cols-2 md:px-12">
         <div className="grid content-start gap-8">
           <div>
+            <h2 className="mb-4 text-[13px] font-bold uppercase tracking-[0.3em] text-dim">
+              Écris-nous
+            </h2>
+            <ContactForm />
+          </div>
+          <div>
             <h2 className="mb-2 text-[13px] font-bold uppercase tracking-[0.3em] text-dim">
-              E-mail
+              Ou par e-mail direct
             </h2>
             <a
               href={`mailto:${site.contactEmail}`}
-              className="break-all font-display text-[clamp(20px,2.6vw,34px)] uppercase no-underline hover:text-acid"
+              className="break-all font-display text-[clamp(18px,2.2vw,28px)] uppercase no-underline hover:text-acid"
             >
               {site.contactEmail}
             </a>
-            <p className="mt-2 text-sm text-dim">
-              Commandes, presse, collaborations, SAV — tout passe par là.
-            </p>
           </div>
           <div>
             <h2 className="mb-3 text-[13px] font-bold uppercase tracking-[0.3em] text-dim">

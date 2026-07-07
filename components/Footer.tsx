@@ -40,6 +40,7 @@ const NAV = [
   { href: "/lookbook", label: "Lookbook" },
   { href: "/manifeste", label: "Manifeste" },
   { href: "/contact", label: "Contact" },
+  { href: "/cgv", label: "CGV" },
   { href: "/mentions-legales", label: "Mentions légales" },
 ];
 

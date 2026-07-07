@@ -22,9 +22,16 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Pour activer Shopify : Settings → Secrets and variables → Actions
+      # → Variables → ajoute NEXT_PUBLIC_SHOPIFY_DOMAIN et
+      # NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN, puis relance le workflow.
+      # Aucun changement de code nécessaire.
       - run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /Marque-s
+          NEXT_PUBLIC_SHOPIFY_DOMAIN: ${{ vars.NEXT_PUBLIC_SHOPIFY_DOMAIN }}
+          NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN: ${{ vars.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN }}
+          NEXT_PUBLIC_NEWSLETTER_ENDPOINT: ${{ vars.NEXT_PUBLIC_NEWSLETTER_ENDPOINT }}
       # Pages ne fait pas tourner Jekyll sur les dossiers _next grâce à .nojekyll
       - run: touch out/.nojekyll
       - name: Publish to gh-pages

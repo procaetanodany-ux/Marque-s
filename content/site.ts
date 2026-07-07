@@ -9,9 +9,20 @@ export const site = {
   description:
     "SORI. Streetwear brut, coupé pour la rue. Drops en édition limitée — quand c'est parti, c'est parti.",
 
-  /* E-mail de la marque : reçoit les commandes (mode pré-commande)
-     et affiché sur la page contact. */
+  /* URL publique du site (SEO, sitemap, partages réseaux sociaux). */
+  url: "https://procaetanodany-ux.github.io/Marque-s",
+
+  /* E-mail de la marque : reçoit les commandes (mode pré-commande),
+     les messages du formulaire de contact et les inscriptions
+     newsletter. Affiché sur la page contact. */
   contactEmail: "pro.caetanodany@gmail.com",
+
+  /* Formulaires (contact + newsletter) : envoyés via FormSubmit,
+     un relais gratuit sans compte. IMPORTANT — à la première
+     soumission, FormSubmit t'enverra UN e-mail de confirmation :
+     clique le lien dedans une fois, et tous les formulaires du site
+     arriveront ensuite directement dans ta boîte. */
+  formEndpoint: "https://formsubmit.co/ajax/pro.caetanodany@gmail.com",
 
   /* ---- BANDEAU D'ANNONCE (ticker en haut de toutes les pages) ----
      Pour faire une annonce : passe enabled à true et édite messages.

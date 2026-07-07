@@ -51,19 +51,15 @@ Sans configuration, le bouton du panier génère un e-mail pré-rempli (récapit
 ### Demain — Shopify (paiement CB, Apple Pay, stock)
 
 1. Crée ta boutique Shopify et tes produits avec **les mêmes handles que les slugs** du catalogue (`tee-le-spray`, `hoodie-beton`, …) et des variantes nommées comme les tailles (`S`, `M`, `L`, `XL`).
-2. Shopify admin → Apps → *Develop apps* → crée une app privée avec les scopes Storefront `unauthenticated_read_product_listings` et `unauthenticated_write_checkouts`. Récupère le **Storefront access token** (public par conception).
-3. Renseigne les deux variables dans `.github/workflows/deploy.yml` (bloc `env` de l'étape build) :
+2. Shopify admin → Paramètres → **Apps et canaux de vente** → *Développer des apps* → crée une app, active l'**API Storefront** avec les scopes `unauthenticated_read_product_listings` et `unauthenticated_write_checkouts`, puis copie le **token d'accès public Storefront** (⚠️ pas la « clé secrète d'API » `shpss_…` : le token public est fait pour être exposé côté client, le secret non).
+3. Dans GitHub : **Settings → Secrets and variables → Actions → onglet Variables** → ajoute :
+   - `NEXT_PUBLIC_SHOPIFY_DOMAIN` = `ta-boutique.myshopify.com`
+   - `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN` = le token public
+4. Relance le workflow (Actions → Deploy to GitHub Pages → *Run workflow*). Aucun changement de code : le panier bascule automatiquement sur le checkout Shopify hébergé. Connecteur : `lib/commerce/shopify.ts`.
 
-```yaml
-NEXT_PUBLIC_SHOPIFY_DOMAIN: ta-boutique.myshopify.com
-NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN: xxxx
-```
+### Formulaires (contact + newsletter) — déjà réels
 
-4. Push. Le panier crée désormais un vrai checkout Shopify hébergé. Le code du connecteur est dans `lib/commerce/shopify.ts`.
-
-### Newsletter
-
-Mode démo par défaut. Pour collecter réellement les e-mails, crée un formulaire sur Formspree ou Brevo et mets l'URL du endpoint dans `content/site.ts` (`newsletterEndpoint`) ou via `NEXT_PUBLIC_NEWSLETTER_ENDPOINT`.
+Le formulaire de contact et la newsletter envoient via **FormSubmit** (gratuit, sans compte) vers `contactEmail`. ⚠️ **Activation unique** : à la toute première soumission, FormSubmit envoie un e-mail de confirmation à cette adresse — clique le lien une fois, et tout arrive ensuite en boîte. Pour passer la newsletter sur un vrai outil d'e-mailing (Brevo…), renseigne `newsletterEndpoint` dans `content/site.ts` ou la variable `NEXT_PUBLIC_NEWSLETTER_ENDPOINT`.
 
 ## Développement
 
@@ -86,8 +82,8 @@ public/products/   photos produit
 
 ## Avant d'ouvrir les ventes — checklist
 
-- [ ] Compléter `app/mentions-legales/page.tsx` (raison sociale, SIRET)
-- [ ] Ajouter des CGV
+- [ ] Activer FormSubmit (cliquer le lien du premier e-mail de confirmation)
+- [ ] Compléter `app/mentions-legales/page.tsx` et `app/cgv/page.tsx` (raison sociale, SIRET)
 - [ ] Remplacer les URLs des réseaux sociaux dans `content/site.ts`
-- [ ] Brancher la newsletter sur un vrai service
+- [ ] Brancher Shopify (voir plus haut) pour encaisser par CB
 - [ ] Vérifier l'adresse e-mail de commande (`contactEmail`)

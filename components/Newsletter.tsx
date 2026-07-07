@@ -21,23 +21,25 @@ export default function Newsletter() {
     setError(false);
     setState("loading");
 
-    /* Endpoint configurable dans content/site.ts (Formspree, Brevo…).
-       Sans endpoint : mode démo, l'inscription est simulée. */
-    if (site.newsletterEndpoint) {
-      try {
-        await fetch(site.newsletterEndpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({ email }),
-        });
-      } catch {
-        /* on affiche quand même la confirmation : le service e-mail
-           gère ses propres retries côté formulaire */
-      }
-      setState("done");
-    } else {
-      setTimeout(() => setState("done"), 900);
+    /* Endpoint dédié (Brevo, Formspree…) si configuré, sinon relais
+       FormSubmit : chaque inscription arrive par e-mail à la marque. */
+    const endpoint = site.newsletterEndpoint || site.formEndpoint;
+    try {
+      await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          email,
+          _subject: "[SORI Newsletter] Nouvelle inscription",
+          _template: "table",
+          _captcha: "false",
+        }),
+      });
+    } catch {
+      /* on affiche quand même la confirmation : le relais e-mail
+         gère ses propres retries côté formulaire */
     }
+    setState("done");
   };
 
   return (
