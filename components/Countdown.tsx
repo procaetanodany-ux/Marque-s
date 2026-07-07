@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { DROP_DATE } from "@/lib/data";
+import { site } from "@/content/site";
 
 type Parts = { d: string; h: string; m: string; s: string };
 
 const pad = (n: number) => String(Math.max(0, n)).padStart(2, "0");
 
 function compute(): Parts | null {
-  const diff = new Date(DROP_DATE).getTime() - Date.now();
+  const diff = new Date(site.drop.date).getTime() - Date.now();
   if (diff <= 0) return null;
   return {
     d: pad(Math.floor(diff / 864e5)),
@@ -66,7 +66,7 @@ export default function Countdown() {
       aria-label="Compte à rebours avant le prochain drop"
     >
       <p className="mb-8 text-sm font-bold uppercase tracking-[0.3em] text-dim">
-        {live ? "Le drop est LIVE." : "Drop 003 dans"}
+        {live ? "Le drop est LIVE." : `${site.drop.label} dans`}
       </p>
       <div className="flex flex-wrap justify-center gap-3 md:gap-10" role="timer">
         {cells.map(({ key, label }) => (

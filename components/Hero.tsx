@@ -88,7 +88,7 @@ export default function Hero() {
           <br />
           Quand c&apos;est parti, c&apos;est parti. Aucun restock, jamais.
         </p>
-        <MagneticButton href="#drop">
+        <MagneticButton href="/drop">
           Voir le drop 003
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
             <path d="M7 17 17 7M9 7h8v8" />

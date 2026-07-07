@@ -1,6 +1,6 @@
-import type { Product } from "@/lib/data";
+export type Art = "peak" | "house" | "cross" | "flag" | "grid" | "star";
 
-const paths: Record<Product["art"], React.ReactNode> = {
+const paths: Record<Art, React.ReactNode> = {
   peak: (
     <>
       <rect x="20" y="20" width="160" height="160" fill="none" stroke="currentColor" strokeWidth="3" />
@@ -37,7 +37,7 @@ const paths: Record<Product["art"], React.ReactNode> = {
   ),
 };
 
-export default function ProductArt({ art, className = "" }: { art: Product["art"]; className?: string }) {
+export default function ProductArt({ art, className = "" }: { art: Art; className?: string }) {
   return (
     <svg viewBox="0 0 200 200" className={className} aria-hidden>
       {paths[art]}

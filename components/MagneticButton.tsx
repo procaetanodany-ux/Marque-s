@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, useRef } from "react";
+import Link from "next/link";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 /* Bouton magnétique : attiré par le curseur, retour élastique. */
@@ -34,15 +35,15 @@ export default function MagneticButton({
   };
 
   const base =
-    "inline-flex min-h-[52px] items-center gap-2.5 border-2 border-acid bg-acid px-7 py-4 text-[15px] font-bold uppercase tracking-[0.1em] text-ink transition-colors duration-150 hover:border-paper hover:bg-paper active:scale-95";
+    "inline-flex min-h-[52px] items-center gap-2.5 border-2 border-acid bg-acid px-7 py-4 text-[15px] font-bold uppercase tracking-[0.1em] text-ink transition-colors duration-150 hover:border-paper hover:bg-paper active:scale-95 no-underline";
 
   return (
     <div ref={ref} onMouseMove={onMove} onMouseLeave={reset} className="inline-block">
       <motion.div style={{ x: sx, y: sy }}>
         {href ? (
-          <a href={href} className={`${base} ${className}`}>
+          <Link href={href} className={`${base} ${className}`}>
             {children}
-          </a>
+          </Link>
         ) : (
           <button type={type ?? "button"} onClick={onClick} className={`${base} ${className}`}>
             {children}

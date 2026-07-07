@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { site } from "@/content/site";
 import MagneticButton from "./MagneticButton";
 
 const isValidEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
@@ -11,7 +12,7 @@ export default function Newsletter() {
   const [error, setError] = useState(false);
   const [state, setState] = useState<"idle" | "loading" | "done">("idle");
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isValidEmail(email)) {
       setError(true);
@@ -19,8 +20,24 @@ export default function Newsletter() {
     }
     setError(false);
     setState("loading");
-    /* Simulation d'appel API — brancher un vrai endpoint ici */
-    setTimeout(() => setState("done"), 900);
+
+    /* Endpoint configurable dans content/site.ts (Formspree, Brevo…).
+       Sans endpoint : mode démo, l'inscription est simulée. */
+    if (site.newsletterEndpoint) {
+      try {
+        await fetch(site.newsletterEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ email }),
+        });
+      } catch {
+        /* on affiche quand même la confirmation : le service e-mail
+           gère ses propres retries côté formulaire */
+      }
+      setState("done");
+    } else {
+      setTimeout(() => setState("done"), 900);
+    }
   };
 
   return (

@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { site } from "@/content/site";
 import SmoothScroll from "@/components/SmoothScroll";
 import Cursor from "@/components/Cursor";
+import Ticker from "@/components/Ticker";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { CartProvider } from "@/components/cart/CartContext";
+import CartDrawer from "@/components/cart/CartDrawer";
 
 const anton = localFont({
   src: "./fonts/anton-latin.woff2",
@@ -19,9 +25,11 @@ const epilogue = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "SORI® — Streetwear brut. Éditions limitées.",
-  description:
-    "SORI. Streetwear brut, coupé pour la rue. Drops en édition limitée — quand c'est parti, c'est parti.",
+  title: {
+    default: `${site.name}® — Streetwear brut. Éditions limitées.`,
+    template: `%s — ${site.name}®`,
+  },
+  description: site.description,
 };
 
 export default function RootLayout({
@@ -30,10 +38,16 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${anton.variable} ${epilogue.variable}`}>
       <body>
-        <SmoothScroll>
-          <Cursor />
-          {children}
-        </SmoothScroll>
+        <CartProvider>
+          <SmoothScroll>
+            <Cursor />
+            <Ticker />
+            <Navbar />
+            {children}
+            <Footer />
+            <CartDrawer />
+          </SmoothScroll>
+        </CartProvider>
       </body>
     </html>
   );
