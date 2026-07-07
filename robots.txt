@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://procaetanodany-ux.github.io/Marque-s/sitemap.xml
