@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Product } from "@/lib/commerce/types";
 import { formatPrice, STATUS_LABEL } from "@/lib/commerce/types";
-import { withBase } from "@/lib/basePath";
+import { assetSrc } from "@/lib/basePath";
 import ProductArt from "./ProductArt";
 
 export default function ProductCard({ product: p, index = 0 }: { product: Product; index?: number }) {
@@ -29,7 +29,7 @@ export default function ProductCard({ product: p, index = 0 }: { product: Produc
       >
         {p.images[0] ? (
           <img
-            src={withBase(p.images[0])}
+            src={assetSrc(p.images[0])}
             alt={p.imageAlt ?? p.name}
             width={576}
             height={922}
@@ -63,12 +63,14 @@ export default function ProductCard({ product: p, index = 0 }: { product: Produc
       </Link>
       <div className="grid gap-1.5 p-6">
         <h3 className="font-display text-2xl uppercase tracking-[0.02em]">{p.name}</h3>
-        <p className="text-sm opacity-70">{p.spec}</p>
+        {p.spec && <p className="text-sm opacity-70">{p.spec}</p>}
         <div className="mt-1.5 flex items-center justify-between">
           <span className="text-xl font-bold tabular-nums">{formatPrice(p.price)}</span>
-          <span className="border-[1.5px] border-current px-2 py-1 text-[11px] font-bold uppercase tracking-[0.12em]">
-            {p.edition}
-          </span>
+          {p.edition && (
+            <span className="border-[1.5px] border-current px-2 py-1 text-[11px] font-bold uppercase tracking-[0.12em]">
+              {p.edition}
+            </span>
+          )}
         </div>
       </div>
       <Link

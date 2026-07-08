@@ -16,7 +16,7 @@ export default function AddToCart({ product }: { product: Product }) {
     return (
       <div className="grid gap-3">
         <p className="border-2 border-paper px-4 py-3 text-center text-[13px] font-bold uppercase tracking-[0.14em]">
-          Drop le 12.07 — 10:00
+          Bientôt disponible
         </p>
         <Link
           href="/#newsletter"

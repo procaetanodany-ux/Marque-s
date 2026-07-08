@@ -3,6 +3,11 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: ["claude/ui-ux-pro-max-install-7gwnnf"]
+  # Reconstruction automatique toutes les 6 h : les produits ajoutés
+  # dans Shopify apparaissent sur le site sans intervention.
+  # Pour une mise à jour immédiate : Actions → ce workflow → Run workflow.
+  schedule:
+    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 permissions:

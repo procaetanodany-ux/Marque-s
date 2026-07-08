@@ -7,11 +7,11 @@ import Manifesto from "@/components/Manifesto";
 import Lookbook from "@/components/Lookbook";
 import Countdown from "@/components/Countdown";
 import Newsletter from "@/components/Newsletter";
-import { products } from "@/content/products";
+import { getCatalog } from "@/lib/commerce/catalog";
 import { site } from "@/content/site";
 
-export default function Home() {
-  const preview = products.slice(0, 3);
+export default async function Home() {
+  const preview = (await getCatalog()).slice(0, 3);
 
   return (
     <div id="top">
@@ -32,15 +32,33 @@ export default function Home() {
               {site.drop.pieces}
             </p>
           </header>
-          <ProductGrid products={preview} />
-          <div className="px-4 pt-10 text-center md:px-12">
-            <Link
-              href="/drop"
-              className="inline-block border-2 border-paper px-8 py-4 text-[15px] font-bold uppercase tracking-[0.1em] no-underline transition-colors hover:border-acid hover:bg-acid hover:text-ink"
-            >
-              Voir tout le drop →
-            </Link>
-          </div>
+          {preview.length > 0 ? (
+            <>
+              <ProductGrid products={preview} />
+              <div className="px-4 pt-10 text-center md:px-12">
+                <Link
+                  href="/drop"
+                  className="inline-block border-2 border-paper px-8 py-4 text-[15px] font-bold uppercase tracking-[0.1em] no-underline transition-colors hover:border-acid hover:bg-acid hover:text-ink"
+                >
+                  Voir tout le drop →
+                </Link>
+              </div>
+            </>
+          ) : (
+            <div className="px-4 md:px-12">
+              <div className="border-2 border-paper p-10 text-center md:p-14">
+                <p className="font-display text-[clamp(24px,3.4vw,40px)] uppercase leading-tight">
+                  Les pièces arrivent — <span className="text-acid">tirage en cours.</span>
+                </p>
+                <Link
+                  href="/#newsletter"
+                  className="mt-6 inline-block border-2 border-acid bg-acid px-7 py-4 text-[15px] font-bold uppercase tracking-[0.1em] text-ink no-underline transition-colors hover:border-paper hover:bg-paper"
+                >
+                  Être alerté du drop
+                </Link>
+              </div>
+            </div>
+          )}
         </section>
 
         <Manifesto />

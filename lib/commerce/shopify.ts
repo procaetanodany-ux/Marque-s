@@ -33,11 +33,16 @@ const API_VERSION = "2025-01";
 export const shopifyDemo = DOMAIN === "mock.shop";
 export const shopifyConfigured = shopifyDemo || Boolean(DOMAIN && TOKEN);
 
+/* Compte client hébergé par Shopify (création de compte, connexion,
+   suivi des commandes) — rien à gérer côté site. */
+export const customerAccountUrl =
+  shopifyConfigured && !shopifyDemo ? `https://${DOMAIN}/account` : null;
+
 const ENDPOINT = shopifyDemo
   ? "https://mock.shop/api"
   : `https://${DOMAIN}/api/${API_VERSION}/graphql.json`;
 
-async function storefront<T>(query: string, variables: Record<string, unknown>): Promise<T> {
+export async function storefront<T>(query: string, variables: Record<string, unknown>): Promise<T> {
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (!shopifyDemo) headers["X-Shopify-Storefront-Access-Token"] = TOKEN;
 

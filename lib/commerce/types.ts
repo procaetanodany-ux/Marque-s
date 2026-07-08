@@ -1,7 +1,7 @@
 /* Types commerce — alignés sur les objets Shopify Storefront pour que la
    bascule locale → Shopify soit un simple changement de source. */
 
-export type Money = { amount: number; currencyCode: "EUR" };
+export type Money = { amount: number; currencyCode: string };
 
 export type ProductStatus = "soon" | "available" | "soldout";
 
@@ -21,7 +21,7 @@ export type Product = {
   spec: string;
   description: string;
   price: Money;
-  edition: string;
+  edition?: string;
   status: ProductStatus;
   variants: Variant[];
   images: string[]; // chemins /public ou URLs CDN Shopify
@@ -49,7 +49,7 @@ export const formatPrice = (m: Money) =>
 
 export const cartTotal = (lines: CartLine[]): Money => ({
   amount: lines.reduce((sum, l) => sum + l.price.amount * l.quantity, 0),
-  currencyCode: "EUR",
+  currencyCode: lines[0]?.price.currencyCode ?? "CHF",
 });
 
 export const STATUS_LABEL: Record<ProductStatus, string> = {

@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "./CartContext";
 import { formatPrice } from "@/lib/commerce/types";
 import { checkout, checkoutModeLabel, shopifyConfigured, shopifyDemo } from "@/lib/commerce/checkout";
-import { withBase } from "@/lib/basePath";
+import { assetSrc } from "@/lib/basePath";
 
 export default function CartDrawer() {
   const { lines, total, isOpen, close, setQuantity, removeLine } = useCart();
@@ -88,7 +88,7 @@ export default function CartDrawer() {
                       <div className="h-20 w-16 flex-none overflow-hidden border-2 border-paper bg-inksoft">
                         {l.image && (
                           <img
-                            src={withBase(l.image)}
+                            src={assetSrc(l.image)}
                             alt=""
                             width={128}
                             height={160}
@@ -118,7 +118,7 @@ export default function CartDrawer() {
                             </button>
                           </div>
                           <span className="font-bold tabular-nums">
-                            {formatPrice({ amount: l.price.amount * l.quantity, currencyCode: "EUR" })}
+                            {formatPrice({ amount: l.price.amount * l.quantity, currencyCode: l.price.currencyCode })}
                           </span>
                         </div>
                       </div>

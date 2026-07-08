@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Product } from "@/lib/commerce/types";
-import { withBase } from "@/lib/basePath";
+import { assetSrc } from "@/lib/basePath";
 import ProductArt from "./ProductArt";
 
 export default function ProductGallery({ product }: { product: Product }) {
@@ -24,7 +24,7 @@ export default function ProductGallery({ product }: { product: Product }) {
         <AnimatePresence mode="wait" initial={false}>
           <motion.img
             key={active}
-            src={withBase(product.images[active])}
+            src={assetSrc(product.images[active])}
             alt={product.imageAlt ?? product.name}
             width={1152}
             height={1440}
@@ -49,7 +49,7 @@ export default function ProductGallery({ product }: { product: Product }) {
               }`}
             >
               <img
-                src={withBase(img)}
+                src={assetSrc(img)}
                 alt=""
                 width={160}
                 height={192}

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "./cart/CartContext";
+import { customerAccountUrl } from "@/lib/commerce/shopify";
 
 const LINKS = [
   { href: "/drop", label: "Le Drop" },
@@ -104,6 +105,18 @@ export default function Navbar() {
       </nav>
 
       <div className="flex items-center gap-4">
+        {customerAccountUrl && (
+          <a
+            href={customerAccountUrl}
+            aria-label="Mon compte — connexion et suivi de commandes"
+            className="hidden h-11 w-11 place-items-center border-2 border-paper transition-colors duration-150 hover:border-acid hover:bg-acid hover:text-ink sm:grid"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 21c0-4 3.6-6 8-6s8 2 8 6" />
+            </svg>
+          </a>
+        )}
         <button
           onClick={openCart}
           aria-label={`Ouvrir le panier, ${count} article${count > 1 ? "s" : ""}`}

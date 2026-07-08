@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { products, getProduct } from "@/content/products";
+import { getCatalog, getCatalogProduct } from "@/lib/commerce/catalog";
 import { formatPrice, STATUS_LABEL } from "@/lib/commerce/types";
 import ProductGallery from "@/components/ProductGallery";
 import ProductGrid from "@/components/ProductGrid";
 import AddToCart from "@/components/AddToCart";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const products = await getCatalog();
+  /* L'export statique exige au moins un chemin : quand le catalogue
+     Shopify est encore vide, on génère une page d'attente. */
+  if (products.length === 0) return [{ slug: "a-venir" }];
   return products.map((p) => ({ slug: p.slug }));
 }
 
@@ -17,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getCatalogProduct(slug);
   if (!product) return {};
   return { title: product.name, description: product.description };
 }
@@ -28,10 +31,31 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProduct(slug);
-  if (!product) notFound();
+  const product = await getCatalogProduct(slug);
 
-  const related = products.filter((p) => p.slug !== slug).slice(0, 3);
+  if (!product) {
+    return (
+      <main className="grid min-h-[60dvh] place-items-center px-4 py-24 text-center">
+        <div className="w-full max-w-[640px] border-2 border-paper p-10 md:p-16">
+          <p className="font-display text-[clamp(28px,4vw,48px)] uppercase leading-tight">
+            Cette pièce arrive <span className="text-acid">bientôt.</span>
+          </p>
+          <p className="mt-4 text-dim">
+            Elle n&apos;est pas encore en ligne — inscris-toi pour être alerté dès sa sortie.
+          </p>
+          <Link
+            href="/#newsletter"
+            className="mt-8 inline-block border-2 border-acid bg-acid px-7 py-4 text-[15px] font-bold uppercase tracking-[0.1em] text-ink no-underline transition-colors hover:border-paper hover:bg-paper"
+          >
+            Être alerté
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  const catalog = await getCatalog();
+  const related = catalog.filter((p) => p.slug !== slug).slice(0, 3);
 
   return (
     <main>
@@ -47,7 +71,7 @@ export default async function ProductPage({
         <div className="flex flex-col gap-6">
           <div>
             <p className="mb-2 flex items-center gap-3 text-[13px] font-bold uppercase tracking-[0.2em] text-dim">
-              N° {product.num} / Drop 003
+              N° {product.num}
               <span
                 className={`px-2 py-0.5 tracking-[0.14em] ${
                   product.status === "available"
@@ -67,9 +91,11 @@ export default async function ProductPage({
               <span className="font-display text-3xl text-acid tabular-nums">
                 {formatPrice(product.price)}
               </span>
-              <span className="border-[1.5px] border-paper px-2 py-1 text-[11px] font-bold uppercase tracking-[0.12em]">
-                {product.edition}
-              </span>
+              {product.edition && (
+                <span className="border-[1.5px] border-paper px-2 py-1 text-[11px] font-bold uppercase tracking-[0.12em]">
+                  {product.edition}
+                </span>
+              )}
             </div>
           </div>
 
@@ -78,13 +104,15 @@ export default async function ProductPage({
           <AddToCart product={product} />
 
           <ul className="grid gap-0 border-2 border-paper text-[13px] font-semibold uppercase tracking-[0.1em]">
+            {product.edition && (
+              <li className="flex justify-between border-b border-inksoft px-4 py-3">
+                <span className="text-dim">Édition</span>
+                <span>Numérotée, {product.edition.replace("×", "")}</span>
+              </li>
+            )}
             <li className="flex justify-between border-b border-inksoft px-4 py-3">
-              <span className="text-dim">Coupe</span>
-              <span>{product.spec.split("—")[0].trim()}</span>
-            </li>
-            <li className="flex justify-between border-b border-inksoft px-4 py-3">
-              <span className="text-dim">Édition</span>
-              <span>Numérotée, {product.edition.replace("×", "")}</span>
+              <span className="text-dim">Paiement</span>
+              <span>CB, Apple Pay, Google Pay</span>
             </li>
             <li className="flex justify-between border-b border-inksoft px-4 py-3">
               <span className="text-dim">Livraison</span>
