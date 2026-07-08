@@ -55,9 +55,19 @@ export default function AddToCart({ product }: { product: Product }) {
   return (
     <div className="grid gap-4">
       <fieldset>
-        <legend className="mb-2 text-[13px] font-bold uppercase tracking-[0.14em]">
-          Taille {warn && !size && <span className="text-[#ff5a4e]">— choisis ta taille</span>}
-        </legend>
+        <div className="mb-2 flex items-center justify-between">
+          <legend className="text-[13px] font-bold uppercase tracking-[0.14em]">
+            Taille {warn && !size && <span className="text-[#ff5a4e]">— choisis ta taille</span>}
+          </legend>
+          {product.variants.length > 1 && (
+            <Link
+              href="/guide-des-tailles"
+              className="text-[12px] font-semibold uppercase tracking-[0.1em] text-dim underline-offset-2 hover:text-acid hover:underline"
+            >
+              Guide des tailles
+            </Link>
+          )}
+        </div>
         <div className="flex flex-wrap gap-2">
           {product.variants.map((v) => (
             <button

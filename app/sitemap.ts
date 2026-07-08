@@ -6,7 +6,17 @@ export const dynamic = "force-static";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const products = await getCatalog();
-  const pages = ["", "/drop", "/lookbook", "/manifeste", "/contact", "/cgv", "/mentions-legales"];
+  const pages = [
+    "",
+    "/drop",
+    "/lookbook",
+    "/manifeste",
+    "/livraison-retours",
+    "/guide-des-tailles",
+    "/contact",
+    "/cgv",
+    "/mentions-legales",
+  ];
   return [
     ...pages.map((p) => ({
       url: `${site.url}${p}/`,

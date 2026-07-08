@@ -19,6 +19,7 @@
 import type { Product, ProductStatus } from "./types";
 import { shopifyConfigured, shopifyDemo, storefront } from "./shopify";
 import { products as devFixtures } from "@/content/products";
+import { site } from "@/content/site";
 
 const ARTS = ["cross", "peak", "house", "flag", "grid", "star"] as const;
 
@@ -67,7 +68,9 @@ function mapProduct(node: ShopifyProductNode, index: number): Product {
         (v.title === "Default Title" ? "TU" : v.title),
       available: v.availableForSale && !soon,
     })),
-    images: node.images.nodes.map((i) => i.url),
+    /* Override local prioritaire tant que la vraie photo n'est pas
+       sur Shopify (voir content/site.ts › localImageOverrides). */
+    images: site.localImageOverrides[node.handle] ?? node.images.nodes.map((i) => i.url),
     imageAlt: node.featuredImage?.altText ?? node.title,
     art: ARTS[index % ARTS.length],
     featured: index === 0,

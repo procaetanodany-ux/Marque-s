@@ -40,6 +40,8 @@ const NAV = [
   { href: "/drop", label: "Le Drop" },
   { href: "/lookbook", label: "Lookbook" },
   { href: "/manifeste", label: "Manifeste" },
+  { href: "/livraison-retours", label: "Livraison & retours" },
+  { href: "/guide-des-tailles", label: "Guide des tailles" },
   { href: "/contact", label: "Contact" },
   { href: "/cgv", label: "CGV" },
   { href: "/mentions-legales", label: "Mentions légales" },

@@ -19,7 +19,7 @@ export default async function Home() {
       <main>
         <Hero />
         <BigMarquee
-          items={["HOODIES — TEES — CARGOS — VESTES — ACCESSOIRES —"]}
+          items={["ÉDITION LIMITÉE — PIÈCE UNIQUE — NUMÉROTÉE — AUCUN RESTOCK —"]}
           duration={22}
         />
 

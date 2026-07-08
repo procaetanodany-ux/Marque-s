@@ -15,9 +15,9 @@ export type Look = {
 export const looks: Look[] = [
   {
     num: "001",
-    caption: "Le Spray, skatepark — avant / dos",
+    caption: "La signature, skatepark — avant / dos",
     image: "/products/le-spray-look.webp",
     imageAlt:
-      "Deux vues du tee Le Spray porté au skatepark : logo SORI poitrine à l'avant, grande signature sprayée au dos",
+      "Deux vues du tee La signature porté au skatepark : logo SORI poitrine à l'avant, grande signature sprayée au dos",
   },
 ];

@@ -57,4 +57,33 @@ export const site = {
     tiktok: "https://tiktok.com/",
     x: "https://x.com/",
   },
+
+  /* ---- IDENTITÉ LÉGALE (mentions légales + CGV) ----
+     Vendeur particulier, Suisse. Complète les champs [à compléter]
+     avant d'ouvrir largement les ventes. */
+  legal: {
+    seller: "[Prénom Nom]", // ton nom (vendeur particulier)
+    locality: "[Localité, Canton]", // ex. "Lausanne, Vaud"
+    country: "Suisse",
+    // ide: "CHE-000.000.000", // si un jour tu t'enregistres
+  },
+
+  /* ---- LIVRAISON & RETOURS (page /livraison-retours + CGV) ----
+     Défauts éditables — ajuste selon ta vraie offre. */
+  shipping: {
+    zones: "Suisse & International",
+    delay: "3 à 7 jours ouvrés après expédition",
+    freeFrom: 150, // livraison offerte dès ce montant (CHF), 0 = jamais
+    flatRate: 6.9, // frais de livraison Suisse (CHF)
+    returnDays: 14,
+    returnCost: "à la charge du client", // ou "offert"
+  },
+
+  /* ---- OVERRIDE PHOTOS PRODUIT ----
+     Pont temporaire : tant que la vraie photo n'est pas sur Shopify,
+     on force les images locales pour ce handle. Vide-le une fois la
+     bonne photo mise en ligne dans l'admin Shopify. */
+  localImageOverrides: {
+    "la-signature": ["/products/le-spray-back.webp", "/products/le-spray-look.webp"],
+  } as Record<string, string[]>,
 } as const;

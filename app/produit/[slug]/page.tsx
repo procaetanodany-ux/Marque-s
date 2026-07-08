@@ -5,6 +5,7 @@ import { formatPrice, STATUS_LABEL } from "@/lib/commerce/types";
 import ProductGallery from "@/components/ProductGallery";
 import ProductGrid from "@/components/ProductGrid";
 import AddToCart from "@/components/AddToCart";
+import ReassuranceBar from "@/components/ReassuranceBar";
 
 export async function generateStaticParams() {
   const products = await getCatalog();
@@ -123,15 +124,30 @@ export default async function ProductPage({
               <span className="text-acid">Jamais</span>
             </li>
           </ul>
+
+          <ReassuranceBar />
+
+          <p className="text-xs text-dim">
+            Besoin d&apos;aide sur la taille ?{" "}
+            <Link href="/guide-des-tailles" className="text-acid underline-offset-2 hover:underline">
+              Voir le guide des tailles
+            </Link>
+            {" · "}
+            <Link href="/livraison-retours" className="text-acid underline-offset-2 hover:underline">
+              Livraison &amp; retours
+            </Link>
+          </p>
         </div>
       </section>
 
-      <section className="border-t-2 border-paper pb-24 pt-14">
-        <h2 className="mb-8 px-4 font-display text-[clamp(28px,4vw,52px)] uppercase md:px-12">
-          Le reste du <span className="text-outline">drop</span>
-        </h2>
-        <ProductGrid products={related} />
-      </section>
+      {related.length > 0 && (
+        <section className="border-t-2 border-paper pb-24 pt-14">
+          <h2 className="mb-8 px-4 font-display text-[clamp(28px,4vw,52px)] uppercase md:px-12">
+            Le reste du <span className="text-outline">drop</span>
+          </h2>
+          <ProductGrid products={related} />
+        </section>
+      )}
     </main>
   );
 }

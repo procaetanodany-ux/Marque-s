@@ -27,8 +27,8 @@ export default function ManifestePage() {
             produire. Pas de sur-stock qui finit brûlé.
           </p>
           <p>
-            Le Spray, notre pièce signature, est passé à l&apos;aérographe un par un. Deux tees
-            ne seront jamais identiques. C&apos;est le principe : tu ne portes pas un logo, tu
+            La signature, notre pièce fondatrice, est passée à l&apos;aérographe une par une. Deux
+            tees ne seront jamais identiques. C&apos;est le principe : tu ne portes pas un logo, tu
             portes une pièce.
           </p>
         </div>
