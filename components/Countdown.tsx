@@ -39,6 +39,12 @@ function Digit({ value }: { value: string }) {
 }
 
 export default function Countdown() {
+  /* Drop déjà en ligne : pas de compte à rebours (constante de build). */
+  if (!site.drop.countdown) return null;
+  return <CountdownTimer />;
+}
+
+function CountdownTimer() {
   const [parts, setParts] = useState<Parts | null>(null);
   const [live, setLive] = useState(false);
 

@@ -30,18 +30,20 @@ export const site = {
   announcement: {
     enabled: true,
     messages: [
-      "DROP 003 — 12.07 — PIÈCES LIMITÉES",
-      "LE SPRAY DISPONIBLE EN PRÉ-COMMANDE",
+      "DROP 001 — DISPONIBLE",
+      "PIÈCES LIMITÉES",
+      "LIVRAISON MONDIALE",
       "AUCUN RESTOCK",
     ],
   },
 
   /* ---- DROP EN COURS ---- */
   drop: {
-    number: "003",
-    label: "Drop 003",
-    date: "2026-07-12T10:00:00+02:00", // compte à rebours
-    pieces: "06 pièces / tirage unique / 12.07.2026",
+    number: "001",
+    label: "Drop 001",
+    date: "2026-07-12T10:00:00+02:00", // compte à rebours (si countdown = true)
+    countdown: false, // false = drop déjà en ligne, on masque le compte à rebours
+    pieces: "Édition limitée / tirage unique",
   },
 
   /* ---- NEWSLETTER ----

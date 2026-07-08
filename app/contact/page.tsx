@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     q: "Quand a lieu le prochain drop ?",
-    a: "Le Drop 003 sort le 12.07 à 10h00 (heure de Paris). Inscris-toi à la newsletter pour un accès anticipé de 24 h.",
+    a: "Le Drop 001 est en ligne. Inscris-toi à la newsletter pour être alerté en avant-première des prochaines pièces.",
   },
   {
     q: "Il y aura un restock ?",

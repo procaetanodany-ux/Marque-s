@@ -89,7 +89,7 @@ export default function Hero() {
           Quand c&apos;est parti, c&apos;est parti. Aucun restock, jamais.
         </p>
         <MagneticButton href="/drop">
-          Voir le drop 003
+          Voir le drop
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
             <path d="M7 17 17 7M9 7h8v8" />
           </svg>
@@ -116,7 +116,7 @@ export default function Hero() {
             <path id="circlePath" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" />
           </defs>
           <text className="fill-paper text-[10.5px] font-bold tracking-[0.22em]">
-            <textPath href="#circlePath">ÉDITION LIMITÉE ★ SORI ★ DROP 003</textPath>
+            <textPath href="#circlePath">ÉDITION LIMITÉE ★ SORI ★ DROP 001</textPath>
           </text>
         </svg>
         <span className="font-display text-[clamp(30px,4vw,48px)] text-acid">S</span>
