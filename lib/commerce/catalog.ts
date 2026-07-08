@@ -119,27 +119,15 @@ export async function getCatalog(): Promise<Product[]> {
     if (!data) throw lastErr;
     const fromShopify = data.products.nodes.map(mapProduct);
 
-    /* Fusion vitrine + Shopify : les vrais produits Shopify (achetables,
-       paiement CB) passent en premier ; les pièces de la collection
-       vitrine (content/products.ts) complètent la grille en « Bientôt »
-       pour que le site reste plein et vivant. Une pièce vitrine dont le
-       handle existe déjà sur Shopify est masquée (Shopify gagne).
-       Quand la boutique est vide, on affiche la vitrine telle quelle. */
-    if (fromShopify.length === 0) {
-      cache = devFixtures;
-    } else {
-      const shopifyHandles = new Set(fromShopify.map((p) => p.slug));
-      const teasers: Product[] = devFixtures
-        .filter((p) => !shopifyHandles.has(p.slug))
-        .map((p) => ({ ...p, status: "soon", featured: false }));
-      cache = [...fromShopify, ...teasers].map((p, i) => ({
-        ...p,
-        num: String(i + 1).padStart(2, "0"),
-      }));
-    }
+    /* Le site n'affiche QUE les vrais produits Shopify. Un seul drop
+       pour l'instant : pas de pièces de remplissage. Si la boutique
+       est vide, les pages montrent leur état d'attente soigné. */
+    cache = fromShopify;
   } catch (e) {
+    /* Shopify injoignable après plusieurs tentatives : on n'invente
+       pas de faux produits, la page affiche son état d'attente. */
     console.warn("[catalog] Shopify indisponible au build :", e);
-    cache = devFixtures;
+    cache = [];
   }
   return cache;
 }
