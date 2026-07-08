@@ -4,43 +4,30 @@ Site e-commerce de la marque streetwear SORI. Next.js 15 (export statique), Tail
 
 **En ligne : https://procaetanodany-ux.github.io/Marque-s/**
 
-## Piloter le site au quotidien
+## Piloter la boutique — tout se passe dans Shopify
 
-Tout se passe dans deux fichiers — modifie, commit, push : le site est à jour ~1 min après.
+**Les produits affichés sur le site viennent de ta boutique Shopify** (SoriWear, `0abmkz-mt.myshopify.com`). Crée, modifie, change les prix, gère le stock depuis l'admin Shopify : le site se reconstruit **automatiquement toutes les 6 h**. Pour une mise à jour immédiate : GitHub → **Actions → Deploy to GitHub Pages → Run workflow**.
+
+### Créer un produit (dans l'admin Shopify)
+
+1. Produits → Ajouter un produit : titre, description, prix (CHF), photos
+2. Variantes : option **Taille** avec S, M, L, XL (ou Taille unique)
+3. **Publication → cocher le canal « Headless »** (obligatoire, sinon invisible sur le site)
+4. Astuces tags : ajoute le tag `soon` pour afficher « Bientôt » (non achetable) ; un tag comme `×200 ex.` s'affiche en badge édition limitée
+
+Le premier produit de la liste (le plus récent) devient la pièce vedette (grande carte).
 
 ### Faire une annonce (bandeau en haut du site)
 
-`content/site.ts` → bloc `announcement` :
-
-```ts
-announcement: {
-  enabled: true,
-  messages: ["NOUVEAU DROP CE VENDREDI", "10H00 PILE", "SOYEZ LÀ"],
-},
-```
-
-### Sortir un vêtement / ouvrir la vente
-
-`content/products.ts` → passe le produit en `status: "available"` et rends les tailles disponibles :
-
-```ts
-status: "available",
-variants: sizes("hoodie-beton", true),   // true = toutes les tailles dispo
-```
-
-Statuts possibles : `"soon"` (bientôt, bouton « Être alerté »), `"available"` (panier actif), `"soldout"` (épuisé).
+`content/site.ts` → bloc `announcement` — modifie, commit : en ligne 1 min après.
 
 ### Changer la date du drop (compte à rebours)
 
-`content/site.ts` → `drop.date` (format ISO avec fuseau) :
+`content/site.ts` → `drop.date` (format ISO avec fuseau).
 
-```ts
-date: "2026-07-12T10:00:00+02:00",
-```
+### Comptes clients
 
-### Ajouter un produit
-
-Ajoute une entrée dans `content/products.ts` (copie une existante). Mets les photos dans `public/products/` (WebP conseillé, ~1600 px de large max) et référence-les dans `images: []`. La page produit est générée automatiquement à l'adresse `/produit/<slug>/`.
+Création de compte, connexion et suivi de commandes sont **hébergés par Shopify** — accessibles via l'icône compte de la navbar et « Mon compte » dans le footer. Active « Comptes clients » dans Shopify (Paramètres → Comptes clients) selon ta préférence.
 
 ## Encaisser les commandes
 
