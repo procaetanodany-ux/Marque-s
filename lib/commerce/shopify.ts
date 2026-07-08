@@ -1,21 +1,26 @@
 /* ============================================================
-   CONNECTEUR SHOPIFY STOREFRONT — prêt à activer.
+   CONNECTEUR SHOPIFY STOREFRONT — le site est la vitrine,
+   Shopify gère le backend (paiement, stock, commandes).
 
-   Pour brancher Shopify :
-   1. Crée la boutique + les produits (mêmes handles que les slugs
-      du catalogue : tee-le-spray, hoodie-beton, …).
-   2. Dans Shopify admin : Apps → Develop apps → crée une app avec
-      le scope Storefront API `unauthenticated_read_product_listings`
-      + `unauthenticated_write_checkouts`.
-   3. Renseigne les variables d'env (dans le workflow de déploiement
-      ou .env.local) :
+   MODE DÉMO (actif par défaut) : tant que la vraie boutique n'est
+   pas renseignée, le connect pointe sur mock.shop — la boutique de
+   démonstration publique de Shopify. Le checkout est un vrai
+   checkout Shopify hébergé, sans aucun débit possible.
+
+   PASSER EN PRODUCTION (aucun changement de code) :
+   1. Boutique Shopify : produits avec les mêmes handles que les
+      slugs du catalogue (tee-le-spray, hoodie-beton, …) et des
+      variantes nommées comme les tailles (S, M, L, XL).
+   2. Admin → Apps → Développer des apps → active l'API Storefront
+      (scopes unauthenticated_read_product_listings +
+      unauthenticated_write_checkouts) → copie le TOKEN PUBLIC
+      Storefront (⚠️ pas la clé secrète shpss_…, qui ne doit
+      jamais être exposée côté client).
+   3. GitHub → Settings → Secrets and variables → Actions →
+      Variables :
         NEXT_PUBLIC_SHOPIFY_DOMAIN=ta-boutique.myshopify.com
-        NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN=xxxx
-   4. C'est tout : le panier crée alors un vrai checkout Shopify
-      (paiement CB, Apple Pay, suivi de stock).
-
-   Le token Storefront est PUBLIC par conception (lecture catalogue +
-   création de panier uniquement) — il peut vivre côté client.
+        NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN=<token public>
+   4. Relance le workflow : le checkout bascule sur ta boutique.
    ============================================================ */
 
 import type { CartLine } from "./types";
@@ -24,15 +29,21 @@ const DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN ?? "";
 const TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN ?? "";
 const API_VERSION = "2025-01";
 
-export const shopifyConfigured = Boolean(DOMAIN && TOKEN);
+/* mock.shop : API Storefront de démo Shopify, sans token. */
+export const shopifyDemo = DOMAIN === "mock.shop";
+export const shopifyConfigured = shopifyDemo || Boolean(DOMAIN && TOKEN);
+
+const ENDPOINT = shopifyDemo
+  ? "https://mock.shop/api"
+  : `https://${DOMAIN}/api/${API_VERSION}/graphql.json`;
 
 async function storefront<T>(query: string, variables: Record<string, unknown>): Promise<T> {
-  const res = await fetch(`https://${DOMAIN}/api/${API_VERSION}/graphql.json`, {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (!shopifyDemo) headers["X-Shopify-Storefront-Access-Token"] = TOKEN;
+
+  const res = await fetch(ENDPOINT, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Shopify-Storefront-Access-Token": TOKEN,
-    },
+    headers,
     body: JSON.stringify({ query, variables }),
   });
   if (!res.ok) throw new Error(`Shopify ${res.status}`);
@@ -41,26 +52,47 @@ async function storefront<T>(query: string, variables: Record<string, unknown>):
   return json.data as T;
 }
 
-/* Récupère l'ID de variante Shopify pour un handle + une taille.
-   Utilisé au checkout pour mapper le catalogue local → Shopify. */
+/* Tailles courtes du catalogue → noms de variantes longs (démo). */
+const SIZE_NAMES: Record<string, string> = {
+  S: "Small",
+  M: "Medium",
+  L: "Large",
+  XL: "X-Large",
+  TU: "Small",
+};
+
+type VariantNodes = { nodes: { id: string; title: string; availableForSale: boolean }[] };
+
+function matchVariant(variants: VariantNodes, size: string): string | null {
+  const candidates = [size, `${size} /`, SIZE_NAMES[size] ?? "", `${SIZE_NAMES[size] ?? ""} /`]
+    .filter(Boolean)
+    .map((s) => s.toLowerCase());
+  const found = variants.nodes.find((v) => {
+    const t = v.title.toLowerCase();
+    return candidates.some((c) => t === c || t.startsWith(c));
+  });
+  return found?.id ?? variants.nodes[0]?.id ?? null;
+}
+
+/* Résout l'ID de variante Shopify pour un handle + une taille.
+   En démo, si le handle n'existe pas sur mock.shop, on retombe sur
+   un produit de démonstration pour prouver le flux de bout en bout. */
 async function resolveVariantId(handle: string, size: string): Promise<string | null> {
-  type Resp = {
-    product: {
-      variants: { nodes: { id: string; title: string; availableForSale: boolean }[] };
-    } | null;
-  };
-  const data = await storefront<Resp>(
-    `query ($handle: String!) {
-      product(handle: $handle) {
-        variants(first: 20) { nodes { id title availableForSale } }
-      }
-    }`,
-    { handle },
-  );
-  const variant = data.product?.variants.nodes.find(
-    (v) => v.title.toLowerCase() === size.toLowerCase(),
-  );
-  return variant?.id ?? null;
+  type Resp = { product: { variants: VariantNodes } | null };
+  const query = `query ($handle: String!) {
+    product(handle: $handle) {
+      variants(first: 20) { nodes { id title availableForSale } }
+    }
+  }`;
+
+  const data = await storefront<Resp>(query, { handle });
+  if (data.product) return matchVariant(data.product.variants, size);
+
+  if (shopifyDemo) {
+    const fallback = await storefront<Resp>(query, { handle: "men-t-shirt" });
+    if (fallback.product) return matchVariant(fallback.product.variants, size);
+  }
+  return null;
 }
 
 /* Crée un panier Shopify et renvoie l'URL du checkout hébergé. */
@@ -78,7 +110,9 @@ export async function createShopifyCheckout(lines: CartLine[]): Promise<string> 
   );
   if (!valid.length) throw new Error("Aucune variante Shopify trouvée pour ce panier.");
 
-  type Resp = { cartCreate: { cart: { checkoutUrl: string } | null; userErrors: { message: string }[] } };
+  type Resp = {
+    cartCreate: { cart: { checkoutUrl: string } | null; userErrors: { message: string }[] };
+  };
   const data = await storefront<Resp>(
     `mutation ($lines: [CartLineInput!]!) {
       cartCreate(input: { lines: $lines }) {

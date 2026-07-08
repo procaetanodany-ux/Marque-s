@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "./CartContext";
 import { formatPrice } from "@/lib/commerce/types";
-import { checkout, checkoutModeLabel, shopifyConfigured } from "@/lib/commerce/checkout";
+import { checkout, checkoutModeLabel, shopifyConfigured, shopifyDemo } from "@/lib/commerce/checkout";
 import { withBase } from "@/lib/basePath";
 
 export default function CartDrawer() {
@@ -153,9 +153,11 @@ export default function CartDrawer() {
                     {busy ? "Un instant…" : checkoutModeLabel}
                   </button>
                   <p className="mt-3 text-center text-xs text-dim">
-                    {shopifyConfigured
-                      ? "Paiement CB, Apple Pay & Google Pay via Shopify."
-                      : "La vente en ligne arrive — en attendant, ta pré-commande part par e-mail et on te répond sous 24 h."}
+                    {shopifyDemo
+                      ? "Mode test : checkout sur la boutique de démonstration Shopify — aucun débit possible."
+                      : shopifyConfigured
+                        ? "Paiement CB, Apple Pay & Google Pay via Shopify."
+                        : "La vente en ligne arrive — en attendant, ta pré-commande part par e-mail et on te répond sous 24 h."}
                   </p>
                 </footer>
               </>

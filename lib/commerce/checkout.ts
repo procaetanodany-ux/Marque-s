@@ -5,14 +5,16 @@
      Fonctionnel dès aujourd'hui, zéro dépendance. */
 
 import { site } from "@/content/site";
-import { shopifyConfigured, createShopifyCheckout } from "./shopify";
+import { shopifyConfigured, shopifyDemo, createShopifyCheckout } from "./shopify";
 import { cartTotal, formatPrice, type CartLine } from "./types";
 
-export { shopifyConfigured };
+export { shopifyConfigured, shopifyDemo };
 
-export const checkoutModeLabel = shopifyConfigured
-  ? "Paiement sécurisé"
-  : "Pré-commande par e-mail";
+export const checkoutModeLabel = shopifyDemo
+  ? "Paiement sécurisé (démo)"
+  : shopifyConfigured
+    ? "Paiement sécurisé"
+    : "Pré-commande par e-mail";
 
 export async function checkout(lines: CartLine[]): Promise<{ url: string; external: boolean }> {
   if (shopifyConfigured) {

@@ -48,7 +48,11 @@ Ajoute une entrée dans `content/products.ts` (copie une existante). Mets les ph
 
 Sans configuration, le bouton du panier génère un e-mail pré-rempli (récapitulatif + total) envoyé à l'adresse définie dans `content/site.ts` (`contactEmail`). Tu confirmes le paiement au client par retour (virement, PayPal, Lydia…).
 
-### Demain — Shopify (paiement CB, Apple Pay, stock)
+### Mode actuel — checkout Shopify de démonstration
+
+Le site est branché sur **mock.shop**, la boutique de démonstration publique de Shopify : le bouton du panier crée un vrai checkout Shopify hébergé (aucun débit possible). Cela prouve le connect de bout en bout en attendant la vraie boutique. Pour repasser en pré-commande e-mail : retire le fallback `|| 'mock.shop'` dans `.github/workflows/deploy.yml`.
+
+### Brancher TA boutique Shopify (paiement CB, Apple Pay, stock)
 
 1. Crée ta boutique Shopify et tes produits avec **les mêmes handles que les slugs** du catalogue (`tee-le-spray`, `hoodie-beton`, …) et des variantes nommées comme les tailles (`S`, `M`, `L`, `XL`).
 2. Shopify admin → Paramètres → **Apps et canaux de vente** → *Développer des apps* → crée une app, active l'**API Storefront** avec les scopes `unauthenticated_read_product_listings` et `unauthenticated_write_checkouts`, puis copie le **token d'accès public Storefront** (⚠️ pas la « clé secrète d'API » `shpss_…` : le token public est fait pour être exposé côté client, le secret non).
