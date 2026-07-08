@@ -101,13 +101,6 @@ body {
   mask-image: radial-gradient(ellipse at 30% 40%, black 30%, transparent 75%);
 }
 
-/* Motifs lookbook */
-.pattern-1 { background: repeating-linear-gradient(45deg, var(--color-ink) 0 14px, var(--color-inksoft) 14px 28px); }
-.pattern-2 { background: radial-gradient(circle at 30% 30%, var(--color-inksoft) 0 22%, var(--color-ink) 23%); background-size: 48px 48px; }
-.pattern-3 { background: repeating-linear-gradient(0deg, var(--color-ink) 0 18px, var(--color-inksoft) 18px 20px); }
-.pattern-4 { background: repeating-conic-gradient(var(--color-ink) 0 25%, var(--color-inksoft) 0 50%); background-size: 56px 56px; }
-.pattern-5 { background: linear-gradient(135deg, var(--color-inksoft), var(--color-ink) 65%); }
-
 /* Glitch du logo au survol */
 @keyframes glitch {
   0%, 100% { transform: translate(0); }
