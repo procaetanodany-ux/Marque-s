@@ -18,7 +18,13 @@ export const checkoutModeLabel = shopifyDemo
 
 export async function checkout(lines: CartLine[]): Promise<{ url: string; external: boolean }> {
   if (shopifyConfigured) {
-    return { url: await createShopifyCheckout(lines), external: true };
+    try {
+      return { url: await createShopifyCheckout(lines), external: true };
+    } catch {
+      /* Produit pas encore publié sur le canal Headless, ou API
+         indisponible : on bascule en pré-commande e-mail plutôt que
+         d'afficher une erreur — aucune vente perdue. */
+    }
   }
 
   const body = [

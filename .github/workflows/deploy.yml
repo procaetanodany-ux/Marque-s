@@ -29,11 +29,12 @@ jobs:
       - run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /Marque-s
-          # 'mock.shop' = boutique de démo Shopify (checkout de test, aucun
-          # débit). Remplacée automatiquement dès que la variable de dépôt
-          # NEXT_PUBLIC_SHOPIFY_DOMAIN pointe sur la vraie boutique.
-          NEXT_PUBLIC_SHOPIFY_DOMAIN: ${{ vars.NEXT_PUBLIC_SHOPIFY_DOMAIN || 'mock.shop' }}
-          NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN: ${{ vars.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN }}
+          # Boutique SoriWear connectée via l'API Storefront. Le token est le
+          # jeton PUBLIC Storefront (conçu pour être exposé côté client).
+          # Les variables de dépôt (Settings → Actions → Variables) ont
+          # priorité si définies.
+          NEXT_PUBLIC_SHOPIFY_DOMAIN: ${{ vars.NEXT_PUBLIC_SHOPIFY_DOMAIN || '0abmkz-mt.myshopify.com' }}
+          NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN: ${{ vars.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN || 'b4672a202a2bfaef31d4ea0efdd1932e' }}
           NEXT_PUBLIC_NEWSLETTER_ENDPOINT: ${{ vars.NEXT_PUBLIC_NEWSLETTER_ENDPOINT }}
       # Pages ne fait pas tourner Jekyll sur les dossiers _next grâce à .nojekyll
       - run: touch out/.nojekyll
