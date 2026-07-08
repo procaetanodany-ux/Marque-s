@@ -86,27 +86,60 @@ export async function getCatalog(): Promise<Product[]> {
     return cache;
   }
 
-  try {
-    const data = await storefront<{ products: { nodes: ShopifyProductNode[] } }>(
-      `query {
-        products(first: 50, sortKey: CREATED_AT, reverse: true) {
-          nodes {
-            handle title description availableForSale tags
-            featuredImage { url altText }
-            images(first: 8) { nodes { url altText } }
-            priceRange { minVariantPrice { amount currencyCode } }
-            variants(first: 20) {
-              nodes { id title availableForSale selectedOptions { name value } }
-            }
-          }
+  const query = `query {
+    products(first: 50, sortKey: CREATED_AT, reverse: true) {
+      nodes {
+        handle title description availableForSale tags
+        featuredImage { url altText }
+        images(first: 8) { nodes { url altText } }
+        priceRange { minVariantPrice { amount currencyCode } }
+        variants(first: 20) {
+          nodes { id title availableForSale selectedOptions { name value } }
         }
-      }`,
-      {},
-    );
-    cache = data.products.nodes.map(mapProduct);
+      }
+    }
+  }`;
+
+  /* L'export statique rend chaque page dans un worker distinct : chacun
+     interroge Shopify. Un échec réseau ponctuel ne doit pas faire tomber
+     une page sur la vitrine alors que les autres ont les vrais produits
+     — d'où les tentatives multiples avant tout repli. */
+  try {
+    let data: { products: { nodes: ShopifyProductNode[] } } | null = null;
+    let lastErr: unknown;
+    for (let attempt = 0; attempt < 4; attempt++) {
+      try {
+        data = await storefront(query, {});
+        break;
+      } catch (err) {
+        lastErr = err;
+        await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
+      }
+    }
+    if (!data) throw lastErr;
+    const fromShopify = data.products.nodes.map(mapProduct);
+
+    /* Fusion vitrine + Shopify : les vrais produits Shopify (achetables,
+       paiement CB) passent en premier ; les pièces de la collection
+       vitrine (content/products.ts) complètent la grille en « Bientôt »
+       pour que le site reste plein et vivant. Une pièce vitrine dont le
+       handle existe déjà sur Shopify est masquée (Shopify gagne).
+       Quand la boutique est vide, on affiche la vitrine telle quelle. */
+    if (fromShopify.length === 0) {
+      cache = devFixtures;
+    } else {
+      const shopifyHandles = new Set(fromShopify.map((p) => p.slug));
+      const teasers: Product[] = devFixtures
+        .filter((p) => !shopifyHandles.has(p.slug))
+        .map((p) => ({ ...p, status: "soon", featured: false }));
+      cache = [...fromShopify, ...teasers].map((p, i) => ({
+        ...p,
+        num: String(i + 1).padStart(2, "0"),
+      }));
+    }
   } catch (e) {
     console.warn("[catalog] Shopify indisponible au build :", e);
-    cache = [];
+    cache = devFixtures;
   }
   return cache;
 }

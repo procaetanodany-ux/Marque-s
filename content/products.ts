@@ -29,7 +29,7 @@ export const products: Product[] = [
     spec: "Oversize — épaules tombantes, col rond côtelé, spray artisanal dos",
     description:
       "La pièce signature de SORI. Un jersey lourd coupé oversize, épaules tombantes, col rond côtelé — puis passé à l'aérographe à l'atelier : nuages pastel rose, lavande et bleu ciel, signature sprayée à la main dans le dos. Chaque exemplaire est unique, numéroté, et ne sera jamais retiré.",
-    price: { amount: 45, currencyCode: "EUR" },
+    price: { amount: 45, currencyCode: "CHF" },
     edition: "×200 ex.",
     status: "available",
     variants: sizes("tee-le-spray", true),
@@ -47,7 +47,7 @@ export const products: Product[] = [
     spec: "Molleton 480 g/m² — coupe boxy",
     description:
       "Un molleton 480 g/m² qui tient debout tout seul. Coupe boxy, capuche doublée, cordons épais. Teinté gris minéral, comme le parking où on l'a shooté.",
-    price: { amount: 89, currencyCode: "EUR" },
+    price: { amount: 89, currencyCode: "CHF" },
     edition: "×150 ex.",
     status: "soon",
     variants: sizes("hoodie-beton", false),
@@ -62,7 +62,7 @@ export const products: Product[] = [
     spec: "Canvas déperlant — poches utilitaires oversize",
     description:
       "Canvas déperlant, poches utilitaires surdimensionnées, boutons pression métal brut. Faite pour durer plus longtemps que les tendances.",
-    price: { amount: 159, currencyCode: "EUR" },
+    price: { amount: 159, currencyCode: "CHF" },
     edition: "×80 ex.",
     status: "soon",
     variants: sizes("veste-chantier", false),
@@ -77,7 +77,7 @@ export const products: Product[] = [
     spec: "Ripstop — jambe large, 8 poches",
     description:
       "Ripstop indéchirable, jambe large, huit poches dont deux zippées. Taille élastiquée à cordon. Le pantalon qui suit, quoi qu'il arrive.",
-    price: { amount: 119, currencyCode: "EUR" },
+    price: { amount: 119, currencyCode: "CHF" },
     edition: "×120 ex.",
     status: "soon",
     variants: sizes("cargo-periph", false),
@@ -92,7 +92,7 @@ export const products: Product[] = [
     spec: "Nylon — logo brodé ton sur ton",
     description:
       "Nylon technique, logo SORI brodé ton sur ton, cordon de serrage discret. Le détail qui finit un fit.",
-    price: { amount: 39, currencyCode: "EUR" },
+    price: { amount: 39, currencyCode: "CHF" },
     edition: "×100 ex.",
     status: "soon",
     variants: sizes("bob-bitume", false, ["TU"]),
@@ -107,7 +107,7 @@ export const products: Product[] = [
     spec: "Les 5 pièces + tote sérigraphié",
     description:
       "Les cinq pièces du drop, ton set complet, plus un tote sérigraphié offert. Vingt-cinq packs, pas un de plus.",
-    price: { amount: 399, currencyCode: "EUR" },
+    price: { amount: 399, currencyCode: "CHF" },
     edition: "×25 ex.",
     status: "soon",
     variants: sizes("pack-complet", false),
