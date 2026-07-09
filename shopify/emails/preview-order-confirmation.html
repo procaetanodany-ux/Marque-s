@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!-- Aperçu : e-mail « Confirmation de commande » Shopify (structure + classes
+     par défaut) avec le skin SORI appliqué. Données factices pour la démo. -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  /* --- (structure par défaut Shopify, simplifiée) --- */
+  body { margin: 0; padding: 0; background: #eee; }
+  table.body { width: 100%; }
+  .container { width: 560px; margin: 0 auto; padding: 40px 24px; }
+  .header { padding: 12px 0 20px; }
+  .shop-name__cell a { font-size: 22px; }
+  h2 { font-size: 24px; margin: 24px 0 4px; }
+  p { font-size: 15px; line-height: 1.6; }
+  .button__cell { margin: 24px 0; }
+  .button__cell a { display: inline-block; padding: 15px 28px; font-size: 14px; }
+  .order-list__item td { padding: 14px 0; border-bottom: 1px solid #e5e5e5; vertical-align: middle; }
+  .order-list__product-image { width: 54px; height: 66px; object-fit: cover; margin-right: 14px; }
+  .order-list__product-description-name { font-weight: 700; }
+  .subtotal-table { width: 100%; margin-top: 16px; }
+  .subtotal-line td { padding: 6px 0; font-size: 14px; }
+  .subtotal-line td:last-child { text-align: right; }
+  .total-price { font-size: 20px; font-weight: 800; }
+  .customer-info { margin-top: 28px; }
+  .customer-info__item p { font-size: 14px; margin: 2px 0; }
+  hr { border: none; border-top: 1px solid #e5e5e5; margin: 28px 0; }
+  .footer { padding-top: 28px; }
+  .disclaimer__subtext { font-size: 12px; }
+
+  /* ===== SKIN SORI (identique à sori-notification-style.html) ===== */
+  body, .body, table.body, .container, td.container, .content, .content-cell, .content__cell { background-color: #0a0a0a !important; color: #f2f0ea !important; }
+  .container, td.container { border: none !important; }
+  body, p, td, span, a, li, div, h1, h2, h3, h4, .customer-info__item, .order-list__item { font-family: "Helvetica Neue", Arial, sans-serif !important; color: #f2f0ea !important; }
+  h1, h2, h3, .shop-name__cell, .order-number { color: #f2f0ea !important; text-transform: uppercase !important; letter-spacing: 0.02em !important; font-weight: 800 !important; }
+  p, td, .subtotal-line__value, .customer-info__item p { color: #c9c7c0 !important; }
+  .header, .shop-name__cell, td.header { background-color: #0a0a0a !important; text-align: center !important; padding-bottom: 8px !important; }
+  .shop-name__cell a, .shop-name a { color: #f2f0ea !important; font-weight: 800 !important; text-transform: uppercase !important; letter-spacing: 0.06em !important; text-decoration: none !important; }
+  .button__cell, .button td, td.button__cell { background-color: #d8f000 !important; border-radius: 0 !important; }
+  .button__cell a, .button a, a.button__text { background-color: #d8f000 !important; color: #0a0a0a !important; border: none !important; border-radius: 0 !important; font-weight: 800 !important; text-transform: uppercase !important; letter-spacing: 0.1em !important; text-decoration: none !important; }
+  a { color: #d8f000 !important; }
+  .shop-name__cell a, .shop-name a { color: #f2f0ea !important; }
+  .button__cell a, .button a, a.button__text { color: #0a0a0a !important; }
+  .order-list__item, .order-list, .subtotal-table, .subtotal-line, .customer-info, .customer-info__item { background-color: #0a0a0a !important; border-color: #262626 !important; }
+  .order-list__item td, .order-list__product-description-cell { border-color: #262626 !important; }
+  .order-list__product-description-name, .subtotal-line__title, .subtotal-line__value strong, .total-price, .subtotal-spacer { color: #f2f0ea !important; }
+  img.order-list__product-image, .order-list__product-image { border: 1px solid #262626 !important; border-radius: 0 !important; }
+  hr, .divider { border-color: #262626 !important; }
+  .footer, .disclaimer, .disclaimer__subtext, .footer__cell { background-color: #0a0a0a !important; color: #7a7a76 !important; }
+  .footer a, .disclaimer a { color: #d8f000 !important; }
+  .total-price, .subtotal-line__value strong { color: #d8f000 !important; font-weight: 800 !important; }
+</style>
+</head>
+<body>
+<table class="body"><tr><td>
+  <div class="container">
+    <div class="header"><table><tr><td class="shop-name__cell"><a href="#">SORI®</a></td></tr></table></div>
+
+    <h2>Merci pour ta commande</h2>
+    <p>Salut Dany, on prépare ta pièce. Tu recevras un e-mail dès qu'elle part.</p>
+
+    <table class="button"><tr><td class="button__cell"><a href="#">Voir ma commande</a></td></tr></table>
+
+    <h3 class="order-number">Commande #1001</h3>
+    <table class="order-list">
+      <tr class="order-list__item"><td>
+        <table><tr>
+          <td><img class="order-list__product-image" src="https://cdn.shopify.com/s/files/1/1042/2779/9382/files/FullSizeRender.jpg?v=1783505091" alt=""></td>
+          <td class="order-list__product-description-cell">
+            <span class="order-list__product-description-name">La signature</span><br>
+            <span>Taille M × 1</span>
+          </td>
+          <td style="text-align:right">43,99 CHF</td>
+        </tr></table>
+      </td></tr>
+    </table>
+
+    <table class="subtotal-table">
+      <tr class="subtotal-line"><td class="subtotal-line__title">Sous-total</td><td class="subtotal-line__value">43,99 CHF</td></tr>
+      <tr class="subtotal-line"><td class="subtotal-line__title">Livraison</td><td class="subtotal-line__value">6,90 CHF</td></tr>
+      <tr class="subtotal-line"><td class="subtotal-line__title"><strong>Total</strong></td><td class="subtotal-line__value"><strong class="total-price">50,89 CHF</strong></td></tr>
+    </table>
+
+    <div class="customer-info">
+      <div class="customer-info__item">
+        <p><strong>Adresse de livraison</strong></p>
+        <p>Dany Caetano<br>Rue de la Rue 12<br>1000 Lausanne, Suisse</p>
+      </div>
+    </div>
+
+    <hr>
+    <div class="footer"><div class="disclaimer__subtext">
+      SORI® — Porte la rue. Pas la mode. Une question ? <a href="#">contact@soriwear.ch</a>
+    </div></div>
+  </div>
+</td></tr></table>
+</body>
+</html>

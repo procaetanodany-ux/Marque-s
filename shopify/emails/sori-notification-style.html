@@ -1,0 +1,114 @@
+<!-- ============================================================
+     SORI — SKIN E-MAILS SHOPIFY (noir + jaune acide)
+     Colle ce bloc dans CHAQUE modèle de notification :
+     Admin Shopify → Réglages → Notifications → (un e-mail) →
+     « Modifier le code » → colle ce bloc JUSTE AVANT la
+     balise </style> existante, puis Enregistre.
+     Il repeint tout le mail sans toucher au contenu {{ ... }}.
+     ============================================================ -->
+<style>
+  /* ---- Fond & structure ---- */
+  body, .body, table.body, .container, td.container, .content, .content-cell, .content__cell {
+    background-color: #0a0a0a !important;
+    color: #f2f0ea !important;
+  }
+  .container, td.container {
+    border: none !important;
+  }
+
+  /* ---- Typo ---- */
+  body, p, td, span, a, li, div, h1, h2, h3, h4, .customer-info__item, .order-list__item {
+    font-family: "Helvetica Neue", Arial, sans-serif !important;
+    color: #f2f0ea !important;
+  }
+  h1, h2, h3, .shop-name__cell, .order-number {
+    color: #f2f0ea !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.02em !important;
+    font-weight: 800 !important;
+  }
+  p, td, .subtotal-line__value, .customer-info__item p {
+    color: #c9c7c0 !important;
+  }
+
+  /* ---- En-tête / nom boutique ---- */
+  .header, .shop-name__cell, td.header {
+    background-color: #0a0a0a !important;
+    text-align: center !important;
+    padding-bottom: 8px !important;
+  }
+  .shop-name__cell a, .shop-name a {
+    color: #f2f0ea !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    text-decoration: none !important;
+  }
+
+  /* ---- Boutons (le bleu devient acide) ---- */
+  .button__cell, .button td, td.button__cell {
+    background-color: #d8f000 !important;
+    border-radius: 0 !important;
+  }
+  .button__cell a, .button a, a.button__text {
+    background-color: #d8f000 !important;
+    color: #0a0a0a !important;
+    border: none !important;
+    border-radius: 0 !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    text-decoration: none !important;
+  }
+
+  /* ---- Liens ---- */
+  a {
+    color: #d8f000 !important;
+  }
+  /* Réaffirmés en dernier pour gagner sur la règle générale ci-dessus : */
+  .shop-name__cell a, .shop-name a {
+    color: #f2f0ea !important;
+  }
+  .button__cell a, .button a, a.button__text {
+    color: #0a0a0a !important;
+  }
+
+  /* ---- Lignes de commande / tableaux ---- */
+  .order-list__item, .order-list, .subtotal-table, .subtotal-line,
+  .customer-info, .customer-info__item {
+    background-color: #0a0a0a !important;
+    border-color: #262626 !important;
+  }
+  .order-list__item td, .order-list__product-description-cell {
+    border-color: #262626 !important;
+  }
+  .order-list__product-description-name, .subtotal-line__title,
+  .subtotal-line__value strong, .total-price, .subtotal-spacer {
+    color: #f2f0ea !important;
+  }
+  img.order-list__product-image, .order-list__product-image {
+    border: 1px solid #262626 !important;
+    border-radius: 0 !important;
+  }
+
+  /* ---- Séparateurs ---- */
+  hr, .divider, table.row td {
+    border-color: #262626 !important;
+    background-color: #262626 !important;
+  }
+
+  /* ---- Pied de page ---- */
+  .footer, .disclaimer, .disclaimer__subtext, .footer__cell {
+    background-color: #0a0a0a !important;
+    color: #7a7a76 !important;
+  }
+  .footer a, .disclaimer a {
+    color: #d8f000 !important;
+  }
+
+  /* ---- Badge total en avant ---- */
+  .total-price, .subtotal-line__value strong {
+    color: #d8f000 !important;
+    font-weight: 800 !important;
+  }
+</style>
