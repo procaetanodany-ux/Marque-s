@@ -23,7 +23,21 @@ import { site } from "@/content/site";
 
 const ARTS = ["cross", "peak", "house", "flag", "grid", "star"] as const;
 
-type ShopifyProductNode = {
+export const PRODUCTS_QUERY = `query {
+  products(first: 50, sortKey: CREATED_AT, reverse: true) {
+    nodes {
+      handle title description availableForSale tags
+      featuredImage { url altText }
+      images(first: 8) { nodes { url altText } }
+      priceRange { minVariantPrice { amount currencyCode } }
+      variants(first: 20) {
+        nodes { id title availableForSale selectedOptions { name value } }
+      }
+    }
+  }
+}`;
+
+export type ShopifyProductNode = {
   handle: string;
   title: string;
   description: string;
@@ -42,7 +56,7 @@ type ShopifyProductNode = {
   };
 };
 
-function mapProduct(node: ShopifyProductNode, index: number): Product {
+export function mapProduct(node: ShopifyProductNode, index: number): Product {
   const soon = node.tags.some((t) => t.toLowerCase() === "soon");
   const status: ProductStatus = soon ? "soon" : node.availableForSale ? "available" : "soldout";
   const editionTag = node.tags.find((t) => /ex\.?$/i.test(t) || t.startsWith("×"));
@@ -89,19 +103,7 @@ export async function getCatalog(): Promise<Product[]> {
     return cache;
   }
 
-  const query = `query {
-    products(first: 50, sortKey: CREATED_AT, reverse: true) {
-      nodes {
-        handle title description availableForSale tags
-        featuredImage { url altText }
-        images(first: 8) { nodes { url altText } }
-        priceRange { minVariantPrice { amount currencyCode } }
-        variants(first: 20) {
-          nodes { id title availableForSale selectedOptions { name value } }
-        }
-      }
-    }
-  }`;
+  const query = PRODUCTS_QUERY;
 
   /* L'export statique rend chaque page dans un worker distinct : chacun
      interroge Shopify. Un échec réseau ponctuel ne doit pas faire tomber

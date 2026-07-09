@@ -46,6 +46,17 @@ export const site = {
     pieces: "Édition limitée / tirage unique",
   },
 
+  /* ---- MODE « BIENTÔT » (soft launch) ----
+     enabled: true  → le site est masqué derrière une page « Bientôt »
+     avec inscription. Pour accéder au vrai site, ouvre l'URL avec
+     ?access=<accessKey> (ex. .../?access=sori-drop-001). L'accès est
+     ensuite mémorisé dans le navigateur.
+     Le jour de la sortie : passe enabled à false → site ouvert à tous. */
+  comingSoon: {
+    enabled: true,
+    accessKey: "sori-drop-001",
+  },
+
   /* ---- NEWSLETTER ----
      Laisse vide pour le mode démo. Pour brancher un vrai service
      (Formspree, Brevo…), mets l'URL du endpoint POST ici ou dans la

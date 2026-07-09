@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import { CartProvider } from "@/components/cart/CartContext";
 import CartDrawer from "@/components/cart/CartDrawer";
 import { AuthProvider } from "@/components/account/AuthContext";
+import ComingSoonGate from "@/components/ComingSoonGate";
 
 const anton = localFont({
   src: "./fonts/anton-latin.woff2",
@@ -55,18 +56,20 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${anton.variable} ${epilogue.variable}`}>
       <body>
-        <AuthProvider>
-          <CartProvider>
-            <SmoothScroll>
-              <Cursor />
-              <Ticker />
-              <Navbar />
-              {children}
-              <Footer />
-              <CartDrawer />
-            </SmoothScroll>
-          </CartProvider>
-        </AuthProvider>
+        <ComingSoonGate>
+          <AuthProvider>
+            <CartProvider>
+              <SmoothScroll>
+                <Cursor />
+                <Ticker />
+                <Navbar />
+                {children}
+                <Footer />
+                <CartDrawer />
+              </SmoothScroll>
+            </CartProvider>
+          </AuthProvider>
+        </ComingSoonGate>
       </body>
     </html>
   );
