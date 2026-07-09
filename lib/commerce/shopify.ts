@@ -25,8 +25,14 @@
 
 import type { CartLine } from "./types";
 
-const DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN ?? "";
-const TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN ?? "";
+/* Identifiants Shopify Storefront. Valeurs par défaut = boutique SoriWear,
+   pour que le site fonctionne sur N'IMPORTE quel hébergement (Vercel,
+   GitHub Pages, local) sans configuration. Le token Storefront est PUBLIC
+   par conception (lecture catalogue + panier + comptes clients uniquement) —
+   il est déjà exposé dans le bundle du site en ligne. Une variable d'env
+   la remplace si besoin (ex. autre boutique). */
+const DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN || "0abmkz-mt.myshopify.com";
+const TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN || "b4672a202a2bfaef31d4ea0efdd1932e";
 const API_VERSION = "2025-01";
 
 /* mock.shop : API Storefront de démo Shopify, sans token. */
