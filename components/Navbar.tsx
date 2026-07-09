@@ -6,7 +6,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "./cart/CartContext";
-import { customerAccountUrl } from "@/lib/commerce/shopify";
+import { useAuth } from "./account/AuthContext";
+import { accountsEnabled } from "@/lib/commerce/customer";
 
 const LINKS = [
   { href: "/drop", label: "Le Drop" },
@@ -20,6 +21,7 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const { count, open: openCart } = useCart();
+  const { customer } = useAuth();
   useEffect(() => setMounted(true), []);
 
   const isActive = (href: string) => pathname === href || pathname === `${href}/`;
@@ -64,6 +66,24 @@ export default function Navbar() {
               </Link>
             </motion.div>
           ))}
+          {accountsEnabled && (
+            <motion.div
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ delay: 0.06 * LINKS.length, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <Link
+                href="/compte"
+                onClick={() => setOpen(false)}
+                className={`font-display text-4xl uppercase tracking-[0.06em] no-underline hover:text-acid ${
+                  isActive("/compte") ? "text-acid" : ""
+                }`}
+              >
+                {customer ? "Mon compte" : "Compte"}
+              </Link>
+            </motion.div>
+          )}
         </motion.nav>
       )}
     </AnimatePresence>
@@ -105,17 +125,22 @@ export default function Navbar() {
       </nav>
 
       <div className="flex items-center gap-4">
-        {customerAccountUrl && (
-          <a
-            href={customerAccountUrl}
-            aria-label="Mon compte — connexion et suivi de commandes"
-            className="hidden h-11 w-11 place-items-center border-2 border-paper transition-colors duration-150 hover:border-acid hover:bg-acid hover:text-ink sm:grid"
+        {accountsEnabled && (
+          <Link
+            href="/compte"
+            aria-label={customer ? "Mon compte" : "Mon compte — connexion et suivi de commandes"}
+            className={`relative hidden h-11 w-11 place-items-center border-2 transition-colors duration-150 hover:border-acid hover:bg-acid hover:text-ink sm:grid ${
+              customer ? "border-acid text-acid" : "border-paper"
+            }`}
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
               <circle cx="12" cy="8" r="4" />
               <path d="M4 21c0-4 3.6-6 8-6s8 2 8 6" />
             </svg>
-          </a>
+            {customer && (
+              <span aria-hidden className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-acid ring-2 ring-ink" />
+            )}
+          </Link>
         )}
         <button
           onClick={openCart}

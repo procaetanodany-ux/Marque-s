@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { site } from "@/content/site";
-import { customerAccountUrl } from "@/lib/commerce/shopify";
+import { accountsEnabled } from "@/lib/commerce/customer";
 import BigMarquee from "./BigMarquee";
 
 const SOCIALS = [
@@ -69,13 +69,13 @@ export default function Footer() {
               {l.label}
             </Link>
           ))}
-          {customerAccountUrl && (
-            <a
-              href={customerAccountUrl}
+          {accountsEnabled && (
+            <Link
+              href="/compte"
               className="w-fit py-1 text-sm font-semibold uppercase tracking-[0.1em] no-underline transition-colors duration-150 hover:text-acid"
             >
               Mon compte
-            </a>
+            </Link>
           )}
         </nav>
         <div className="flex items-start gap-4">

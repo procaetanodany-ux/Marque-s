@@ -115,17 +115,33 @@ export async function createShopifyCheckout(lines: CartLine[]): Promise<string> 
   );
   if (!valid.length) throw new Error("Aucune variante Shopify trouvée pour ce panier.");
 
+  /* Client connecté : on rattache le panier à son compte pour que la
+     commande apparaisse dans « Mes commandes » et que le checkout soit
+     pré-rempli. Token lu depuis le localStorage du compte. */
+  let buyerIdentity: { customerAccessToken: string } | undefined;
+  try {
+    const raw = typeof localStorage !== "undefined" ? localStorage.getItem("sori-customer-v1") : null;
+    if (raw) {
+      const t = JSON.parse(raw) as { accessToken?: string; expiresAt?: string };
+      if (t.accessToken && (!t.expiresAt || new Date(t.expiresAt).getTime() > Date.now())) {
+        buyerIdentity = { customerAccessToken: t.accessToken };
+      }
+    }
+  } catch {
+    /* pas connecté / stockage indisponible : checkout invité */
+  }
+
   type Resp = {
     cartCreate: { cart: { checkoutUrl: string } | null; userErrors: { message: string }[] };
   };
   const data = await storefront<Resp>(
-    `mutation ($lines: [CartLineInput!]!) {
-      cartCreate(input: { lines: $lines }) {
+    `mutation ($lines: [CartLineInput!]!, $buyer: CartBuyerIdentityInput) {
+      cartCreate(input: { lines: $lines, buyerIdentity: $buyer }) {
         cart { checkoutUrl }
         userErrors { message }
       }
     }`,
-    { lines: valid },
+    { lines: valid, buyer: buyerIdentity ?? null },
   );
   if (!data.cartCreate.cart) {
     throw new Error(data.cartCreate.userErrors[0]?.message ?? "Création du panier impossible.");
