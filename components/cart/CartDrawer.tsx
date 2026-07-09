@@ -4,14 +4,20 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "./CartContext";
+import { useAuth } from "../account/AuthContext";
 import { formatPrice } from "@/lib/commerce/types";
 import { checkout, checkoutModeLabel, shopifyConfigured, shopifyDemo } from "@/lib/commerce/checkout";
+import { accountsEnabled } from "@/lib/commerce/customer";
 import { assetSrc } from "@/lib/basePath";
 
 export default function CartDrawer() {
   const { lines, total, isOpen, close, setQuantity, removeLine } = useCart();
+  const { customer, ready } = useAuth();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+
+  /* Compte obligatoire avant de commander (quand les comptes sont actifs). */
+  const mustLogin = accountsEnabled && !shopifyDemo && ready && !customer;
 
   const onCheckout = async () => {
     setBusy(true);
@@ -145,20 +151,37 @@ export default function CartDrawer() {
                       {error}
                     </p>
                   )}
-                  <button
-                    onClick={onCheckout}
-                    disabled={busy}
-                    className="w-full border-2 border-acid bg-acid px-6 py-4 text-[15px] font-bold uppercase tracking-[0.1em] text-ink transition-colors hover:border-paper hover:bg-paper disabled:opacity-60"
-                  >
-                    {busy ? "Un instant…" : checkoutModeLabel}
-                  </button>
-                  <p className="mt-3 text-center text-xs text-dim">
-                    {shopifyDemo
-                      ? "Mode test : checkout sur la boutique de démonstration Shopify — aucun débit possible."
-                      : shopifyConfigured
-                        ? "Paiement CB, Apple Pay & Google Pay via Shopify."
-                        : "La vente en ligne arrive — en attendant, ta pré-commande part par e-mail et on te répond sous 24 h."}
-                  </p>
+                  {mustLogin ? (
+                    <>
+                      <Link
+                        href="/compte?redirect=cart"
+                        onClick={close}
+                        className="block w-full border-2 border-acid bg-acid px-6 py-4 text-center text-[15px] font-bold uppercase tracking-[0.1em] text-ink no-underline transition-colors hover:border-paper hover:bg-paper"
+                      >
+                        Se connecter pour commander
+                      </Link>
+                      <p className="mt-3 text-center text-xs text-dim">
+                        Un compte est requis pour finaliser ta commande — création en 1 minute.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={onCheckout}
+                        disabled={busy}
+                        className="w-full border-2 border-acid bg-acid px-6 py-4 text-[15px] font-bold uppercase tracking-[0.1em] text-ink transition-colors hover:border-paper hover:bg-paper disabled:opacity-60"
+                      >
+                        {busy ? "Un instant…" : checkoutModeLabel}
+                      </button>
+                      <p className="mt-3 text-center text-xs text-dim">
+                        {shopifyDemo
+                          ? "Mode test : checkout sur la boutique de démonstration Shopify — aucun débit possible."
+                          : shopifyConfigured
+                            ? "Paiement CB, Apple Pay & Google Pay via Shopify."
+                            : "La vente en ligne arrive — en attendant, ta pré-commande part par e-mail et on te répond sous 24 h."}
+                      </p>
+                    </>
+                  )}
                 </footer>
               </>
             )}

@@ -14,10 +14,16 @@ import {
   register as apiRegister,
   logout as apiLogout,
   recover as apiRecover,
+  updateProfile as apiUpdateProfile,
+  createAddress as apiCreateAddress,
+  updateAddress as apiUpdateAddress,
+  deleteAddress as apiDeleteAddress,
+  setDefaultAddress as apiSetDefaultAddress,
   getCustomer,
   type Customer,
   type CustomerToken,
   type UserError,
+  type AddressInput,
 } from "@/lib/commerce/customer";
 
 const STORAGE_KEY = "sori-customer-v1";
@@ -34,12 +40,19 @@ type AuthContextValue = {
     firstName: string;
     lastName: string;
     email: string;
+    phone?: string;
     password: string;
     acceptsMarketing?: boolean;
+    address?: AddressInput;
   }) => Promise<AuthResult>;
   recover: (email: string) => Promise<AuthResult>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
+  updateProfile: (input: { firstName?: string; lastName?: string; phone?: string }) => Promise<AuthResult>;
+  createAddress: (address: AddressInput, makeDefault?: boolean) => Promise<AuthResult>;
+  updateAddress: (id: string, address: AddressInput) => Promise<AuthResult>;
+  deleteAddress: (id: string) => Promise<AuthResult>;
+  setDefaultAddress: (id: string) => Promise<AuthResult>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -156,9 +169,56 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (token) await loadCustomer(token);
   }, [token, loadCustomer]);
 
+  /* Helper : exécute une action authentifiée puis rafraîchit le client. */
+  const withToken = useCallback(
+    async (fn: (t: string) => Promise<{ errors: UserError[] }>): Promise<AuthResult> => {
+      if (!token) return { ok: false, errors: [{ message: "Non connecté." }] };
+      setLoading(true);
+      try {
+        const { errors } = await fn(token);
+        if (errors.length) return { ok: false, errors };
+        await loadCustomer(token);
+        return { ok: true };
+      } finally {
+        setLoading(false);
+      }
+    },
+    [token, loadCustomer],
+  );
+
+  const updateProfile = useCallback<AuthContextValue["updateProfile"]>(
+    (input) => withToken((t) => apiUpdateProfile(t, input)),
+    [withToken],
+  );
+  const createAddress = useCallback<AuthContextValue["createAddress"]>(
+    (address, makeDefault) =>
+      withToken(async (t) => {
+        const res = await apiCreateAddress(t, address);
+        if (res.id && makeDefault) await apiSetDefaultAddress(t, res.id);
+        return { errors: res.errors };
+      }),
+    [withToken],
+  );
+  const updateAddress = useCallback<AuthContextValue["updateAddress"]>(
+    (id, address) => withToken((t) => apiUpdateAddress(t, id, address)),
+    [withToken],
+  );
+  const deleteAddress = useCallback<AuthContextValue["deleteAddress"]>(
+    (id) => withToken((t) => apiDeleteAddress(t, id)),
+    [withToken],
+  );
+  const setDefaultAddress = useCallback<AuthContextValue["setDefaultAddress"]>(
+    (id) => withToken((t) => apiSetDefaultAddress(t, id)),
+    [withToken],
+  );
+
   const value = useMemo<AuthContextValue>(
-    () => ({ customer, token, ready, loading, login, register, recover, logout, refresh }),
-    [customer, token, ready, loading, login, register, recover, logout, refresh],
+    () => ({
+      customer, token, ready, loading, login, register, recover, logout, refresh,
+      updateProfile, createAddress, updateAddress, deleteAddress, setDefaultAddress,
+    }),
+    [customer, token, ready, loading, login, register, recover, logout, refresh,
+      updateProfile, createAddress, updateAddress, deleteAddress, setDefaultAddress],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

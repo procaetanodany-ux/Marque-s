@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "./AuthContext";
-import type { UserError } from "@/lib/commerce/customer";
+import AddressFields, { toInput, isAddressComplete } from "./AddressForm";
+import type { AddressInput, UserError } from "@/lib/commerce/customer";
 
 const isValidEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
 
@@ -36,8 +37,10 @@ export default function AuthForms() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [optin, setOptin] = useState(true);
+  const [address, setAddress] = useState<AddressInput>(toInput({}));
 
   const switchTab = (t: Tab) => {
     setTab(t);
@@ -63,7 +66,19 @@ export default function AuthForms() {
       setErrors([{ message: "Vérifie ton prénom, ton e-mail et un mot de passe d'au moins 5 caractères." }]);
       return;
     }
-    const res = await register({ firstName, lastName, email, password, acceptsMarketing: optin });
+    if (!isAddressComplete(address)) {
+      setErrors([{ message: "Complète ton adresse de livraison (rue, code postal, ville, pays)." }]);
+      return;
+    }
+    const res = await register({
+      firstName,
+      lastName,
+      email,
+      phone: phone || undefined,
+      password,
+      acceptsMarketing: optin,
+      address: { ...address, firstName: address.firstName || firstName, lastName: address.lastName || lastName, phone: address.phone || phone },
+    });
     if (!res.ok) setErrors(res.errors ?? [{ message: "Création impossible." }]);
   };
 
@@ -151,6 +166,14 @@ export default function AuthForms() {
                 <label htmlFor="r-pass" className={labelCls}>Mot de passe</label>
                 <input id="r-pass" type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} className={inputCls} placeholder="Au moins 5 caractères" />
               </div>
+
+              <div className="mt-2 border-t-2 border-inksoft pt-5">
+                <p className="mb-4 text-[13px] font-bold uppercase tracking-[0.2em] text-dim">
+                  Adresse de livraison
+                </p>
+                <AddressFields value={address} onChange={setAddress} requireName={false} />
+              </div>
+
               <label className="flex items-start gap-3 text-[13px] text-dim">
                 <input type="checkbox" checked={optin} onChange={(e) => setOptin(e.target.checked)} className="mt-1 h-4 w-4 accent-[#d8f000]" />
                 Je veux être prévenu des prochains drops en avant-première.
