@@ -5,9 +5,19 @@ import { motion } from "framer-motion";
 import type { Product } from "@/lib/commerce/types";
 import { formatPrice, STATUS_LABEL } from "@/lib/commerce/types";
 import { assetSrc } from "@/lib/basePath";
+import { shopifyImg, shopifySrcSet } from "@/lib/img";
 import ProductArt from "./ProductArt";
 
+/* Stock total restant (si le stock réel Shopify est lisible), sinon null. */
+function totalStock(p: Product): number | null {
+  const known = p.variants.filter((v) => typeof v.maxQuantity === "number");
+  if (!known.length) return null;
+  return known.reduce((n, v) => n + (v.maxQuantity ?? 0), 0);
+}
+
 export default function ProductCard({ product: p, index = 0 }: { product: Product; index?: number }) {
+  const stock = p.status === "available" ? totalStock(p) : null;
+  const lowStock = stock !== null && stock > 0 && stock <= 5;
   return (
     <motion.article
       initial={{ opacity: 0, y: 60 }}
@@ -29,7 +39,9 @@ export default function ProductCard({ product: p, index = 0 }: { product: Produc
       >
         {p.images[0] ? (
           <img
-            src={assetSrc(p.images[0])}
+            src={assetSrc(shopifyImg(p.images[0], 800))}
+            srcSet={shopifySrcSet(p.images[0], [480, 800, 1200])}
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             alt={p.imageAlt ?? p.name}
             width={576}
             height={922}
@@ -58,7 +70,7 @@ export default function ProductCard({ product: p, index = 0 }: { product: Produc
                 : "border border-current"
           }`}
         >
-          {STATUS_LABEL[p.status]}
+          {lowStock ? `Plus que ${stock}` : STATUS_LABEL[p.status]}
         </span>
       </Link>
       <div className="grid gap-1.5 p-6">

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getCatalog, getCatalogProduct } from "@/lib/commerce/catalog";
 import ProductGrid from "@/components/ProductGrid";
 import ProductDetail from "@/components/ProductDetail";
+import { jsonLd, productLd } from "@/lib/jsonld";
 
 export async function generateStaticParams() {
   const products = await getCatalog();
@@ -57,6 +58,11 @@ export default async function ProductPage({
 
   return (
     <main>
+      {/* SEO : fiche produit lisible par Google (prix, stock, photo). */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(productLd(product)) }}
+      />
       <nav aria-label="Fil d'Ariane" className="px-4 pt-8 text-[13px] font-semibold uppercase tracking-[0.14em] text-dim md:px-12">
         <Link href="/drop" className="no-underline hover:text-acid">
           ← Le Drop

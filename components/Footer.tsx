@@ -42,6 +42,7 @@ const NAV = [
   { href: "/manifeste", label: "Manifeste" },
   { href: "/livraison-retours", label: "Livraison & retours" },
   { href: "/guide-des-tailles", label: "Guide des tailles" },
+  { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
   { href: "/cgv", label: "CGV" },
   { href: "/mentions-legales", label: "Mentions légales" },

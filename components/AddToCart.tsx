@@ -4,6 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import type { Product } from "@/lib/commerce/types";
 import { useCart } from "./cart/CartContext";
+import NotifyMe from "./NotifyMe";
+
+/* Seuil sous lequel on affiche l'urgence stock (« Plus que N »). */
+const LOW_STOCK = 5;
 
 export default function AddToCart({ product }: { product: Product }) {
   const { addLine } = useCart();
@@ -11,6 +15,8 @@ export default function AddToCart({ product }: { product: Product }) {
     product.variants.length === 1 ? product.variants[0].size : null,
   );
   const [warn, setWarn] = useState(false);
+  const [notifyOpen, setNotifyOpen] = useState(false);
+  const soldOutSizes = product.variants.filter((v) => !v.available).map((v) => v.size);
 
   if (product.status === "soon") {
     return (
@@ -30,9 +36,17 @@ export default function AddToCart({ product }: { product: Product }) {
 
   if (product.status === "soldout") {
     return (
-      <p className="border-2 border-paper px-6 py-4 text-center text-[15px] font-bold uppercase tracking-[0.1em] opacity-60">
-        Épuisé — aucun restock
-      </p>
+      <div className="grid gap-4">
+        <p className="border-2 border-paper px-6 py-4 text-center text-[15px] font-bold uppercase tracking-[0.1em] opacity-60">
+          Épuisé — aucun restock
+        </p>
+        <div className="border-2 border-inksoft p-4">
+          <p className="mb-3 text-[13px] font-bold uppercase tracking-[0.14em]">
+            Sois prévenu·e du <span className="text-acid">prochain drop</span>
+          </p>
+          <NotifyMe productName={product.name} />
+        </div>
+      </div>
     );
   }
 
@@ -90,6 +104,21 @@ export default function AddToCart({ product }: { product: Product }) {
             </button>
           ))}
         </div>
+        {/* Urgence stock : visible seulement quand le stock réel est lisible
+            (scope inventaire Shopify activé) et bas. */}
+        {(() => {
+          const sel = size ? product.variants.find((v) => v.size === size) : undefined;
+          const q = sel?.maxQuantity;
+          if (sel?.available && typeof q === "number" && q > 0 && q <= LOW_STOCK) {
+            return (
+              <p className="mt-3 flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.12em] text-acid">
+                <span aria-hidden className="inline-block h-2 w-2 animate-pulse bg-acid" />
+                Plus que {q} en stock — taille {sel.size}
+              </p>
+            );
+          }
+          return null;
+        })()}
       </fieldset>
       <button
         onClick={add}
@@ -97,6 +126,25 @@ export default function AddToCart({ product }: { product: Product }) {
       >
         Ajouter au panier
       </button>
+
+      {/* Taille épuisée : capture d'e-mail pour le prochain drop. */}
+      {soldOutSizes.length > 0 && (
+        <div>
+          <button
+            type="button"
+            onClick={() => setNotifyOpen((o) => !o)}
+            aria-expanded={notifyOpen}
+            className="text-left text-[13px] font-semibold uppercase tracking-[0.1em] text-dim underline-offset-2 hover:text-acid hover:underline"
+          >
+            Ta taille est épuisée ? Préviens-moi du prochain drop {notifyOpen ? "−" : "+"}
+          </button>
+          {notifyOpen && (
+            <div className="mt-3 border-2 border-inksoft p-4">
+              <NotifyMe productName={product.name} sizes={soldOutSizes} />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

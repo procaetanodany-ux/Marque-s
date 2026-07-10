@@ -52,6 +52,15 @@ Le site est branché sur **mock.shop**, la boutique de démonstration publique d
 
 Le formulaire de contact et la newsletter envoient via **FormSubmit** (gratuit, sans compte) vers `contactEmail`. ⚠️ **Activation unique** : à la toute première soumission, FormSubmit envoie un e-mail de confirmation à cette adresse — clique le lien une fois, et tout arrive ensuite en boîte. Pour passer la newsletter sur un vrai outil d'e-mailing (Brevo…), renseigne `newsletterEndpoint` dans `content/site.ts` ou la variable `NEXT_PUBLIC_NEWSLETTER_ENDPOINT`.
 
+### Statistiques de visite (GoatCounter) — 2 min à activer
+
+Le site envoie déjà les visites vers **GoatCounter** (gratuit, sans cookie → aucune bannière de consentement). Pour voir ton tableau de bord : crée un compte sur [goatcounter.com/signup](https://www.goatcounter.com/signup) avec le code **`soriwear`** — le dashboard sera sur `https://soriwear.goatcounter.com`. Le code est réglable dans `content/site.ts` › `analytics.goatcounter` (mets `""` pour désactiver).
+
+### Stock affiché & alertes
+
+- **« Plus que X en stock »** s'affiche automatiquement (fiche produit + cartes) dès que le droit Storefront `unauthenticated_read_product_inventory` est coché dans l'app Headless Shopify. Sans ce droit, rien ne casse : le badge est juste masqué.
+- **Taille épuisée** : le visiteur peut laisser son e-mail (« Préviens-moi du prochain drop ») — tu reçois l'alerte par FormSubmit avec la pièce et la taille demandées.
+
 ## Développement
 
 ```bash
@@ -74,7 +83,9 @@ public/products/   photos produit
 ## Avant d'ouvrir les ventes — checklist
 
 - [ ] Activer FormSubmit (cliquer le lien du premier e-mail de confirmation)
-- [ ] Compléter `app/mentions-legales/page.tsx` et `app/cgv/page.tsx` (raison sociale, SIRET)
+- [ ] Compléter `legal.seller` et `legal.locality` dans `content/site.ts` (nom + localité, vendeur particulier suisse)
 - [ ] Remplacer les URLs des réseaux sociaux dans `content/site.ts`
-- [ ] Brancher Shopify (voir plus haut) pour encaisser par CB
 - [ ] Vérifier l'adresse e-mail de commande (`contactEmail`)
+- [ ] Cocher le droit `unauthenticated_read_product_inventory` dans l'app Headless Shopify (stock réel visible)
+- [ ] Créer le compte GoatCounter avec le code `soriwear` (statistiques de visite)
+- [ ] Jour J : passer `comingSoon.enabled` à `false` dans `content/site.ts` → site ouvert à tous

@@ -11,6 +11,8 @@ import { CartProvider } from "@/components/cart/CartContext";
 import CartDrawer from "@/components/cart/CartDrawer";
 import { AuthProvider } from "@/components/account/AuthContext";
 import ComingSoonGate from "@/components/ComingSoonGate";
+import Analytics from "@/components/Analytics";
+import { jsonLd, organizationLd, webSiteLd } from "@/lib/jsonld";
 
 const anton = localFont({
   src: "./fonts/anton-latin.woff2",
@@ -56,6 +58,16 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${anton.variable} ${epilogue.variable}`}>
       <body>
+        {/* SEO : identité de la marque pour Google (données structurées). */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(organizationLd()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(webSiteLd()) }}
+        />
+        <Analytics />
         <ComingSoonGate>
           <AuthProvider>
             <CartProvider>

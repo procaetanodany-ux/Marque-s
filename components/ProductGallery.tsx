@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Product } from "@/lib/commerce/types";
 import { assetSrc } from "@/lib/basePath";
+import { shopifyImg, shopifySrcSet } from "@/lib/img";
 import ProductArt from "./ProductArt";
 
 export default function ProductGallery({ product }: { product: Product }) {
@@ -24,7 +25,9 @@ export default function ProductGallery({ product }: { product: Product }) {
         <AnimatePresence mode="wait" initial={false}>
           <motion.img
             key={active}
-            src={assetSrc(product.images[active])}
+            src={assetSrc(shopifyImg(product.images[active], 1152))}
+            srcSet={shopifySrcSet(product.images[active], [640, 960, 1440])}
+            sizes="(min-width: 768px) 50vw, 100vw"
             alt={product.imageAlt ?? product.name}
             width={1152}
             height={1440}
@@ -49,7 +52,7 @@ export default function ProductGallery({ product }: { product: Product }) {
               }`}
             >
               <img
-                src={assetSrc(img)}
+                src={assetSrc(shopifyImg(img, 160))}
                 alt=""
                 width={160}
                 height={192}

@@ -57,6 +57,18 @@ export const site = {
     accessKey: "sori",
   },
 
+  /* ---- STATISTIQUES DE VISITE (GoatCounter) ----
+     Compteur de visiteurs GRATUIT et SANS COOKIE (aucune bannière de
+     consentement requise). Mise en route (2 min) :
+     1. Crée un compte sur https://www.goatcounter.com/signup
+        avec le code « soriwear » (→ https://soriwear.goatcounter.com).
+     2. C'est tout : le site envoie déjà les visites vers ce code.
+     Ton tableau de bord : https://soriwear.goatcounter.com
+     Mets "" pour désactiver le comptage. */
+  analytics: {
+    goatcounter: "soriwear",
+  },
+
   /* ---- NEWSLETTER ----
      Laisse vide pour le mode démo. Pour brancher un vrai service
      (Formspree, Brevo…), mets l'URL du endpoint POST ici ou dans la

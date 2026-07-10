@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import type { Product } from "@/lib/commerce/types";
 import { formatPrice, STATUS_LABEL } from "@/lib/commerce/types";
 import { assetSrc } from "@/lib/basePath";
+import { shopifyImg, shopifySrcSet } from "@/lib/img";
 import ProductArt from "./ProductArt";
 
 /* Présentation éditoriale d'une pièce unique — pour un drop à un seul
@@ -26,8 +27,13 @@ export default function ProductFeature({ product: p }: { product: Product }) {
         >
           {p.images[0] ? (
             <img
-              src={assetSrc(p.images[0])}
+              src={assetSrc(shopifyImg(p.images[0], 1152))}
+              srcSet={shopifySrcSet(p.images[0], [640, 960, 1440])}
+              sizes="(min-width: 768px) 50vw, 100vw"
               alt={p.imageAlt ?? p.name}
+              width={1152}
+              height={1152}
+              loading="lazy"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
             />
           ) : (

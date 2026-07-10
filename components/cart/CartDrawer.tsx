@@ -9,6 +9,7 @@ import { formatPrice } from "@/lib/commerce/types";
 import { checkout, checkoutModeLabel, shopifyConfigured, shopifyDemo } from "@/lib/commerce/checkout";
 import { accountsEnabled } from "@/lib/commerce/customer";
 import { assetSrc } from "@/lib/basePath";
+import { shopifyImg } from "@/lib/img";
 
 export default function CartDrawer() {
   const { lines, total, isOpen, close, setQuantity, removeLine } = useCart();
@@ -94,7 +95,7 @@ export default function CartDrawer() {
                       <div className="h-20 w-16 flex-none overflow-hidden border-2 border-paper bg-inksoft">
                         {l.image && (
                           <img
-                            src={assetSrc(l.image)}
+                            src={assetSrc(shopifyImg(l.image, 128))}
                             alt=""
                             width={128}
                             height={160}
