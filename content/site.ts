@@ -54,7 +54,7 @@ export const site = {
      Le jour de la sortie : passe enabled à false → site ouvert à tous. */
   comingSoon: {
     enabled: true,
-    accessKey: "sori-drop-001",
+    accessKey: "sori",
   },
 
   /* ---- NEWSLETTER ----
