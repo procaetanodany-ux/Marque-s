@@ -2,7 +2,7 @@
 
 Site e-commerce de la marque streetwear SORI. Next.js 15 (export statique), Tailwind 4, Framer Motion. Déployé automatiquement sur GitHub Pages à chaque push.
 
-**En ligne : https://procaetanodany-ux.github.io/Marque-s/**
+**En ligne : https://soriwear.ch** (domaine principal, Vercel) — copie miroir : https://procaetanodany-ux.github.io/Marque-s/
 
 ## Piloter la boutique — tout se passe dans Shopify
 

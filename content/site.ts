@@ -9,8 +9,10 @@ export const site = {
   description:
     "SORI. Streetwear brut, coupé pour la rue. Drops en édition limitée — quand c'est parti, c'est parti.",
 
-  /* URL publique du site (SEO, sitemap, partages réseaux sociaux). */
-  url: "https://procaetanodany-ux.github.io/Marque-s",
+  /* URL publique OFFICIELLE du site (SEO, sitemap, partages réseaux
+     sociaux). Domaine principal : soriwear.ch (servi par Vercel) ;
+     la copie GitHub Pages pointe vers cette adresse de référence. */
+  url: "https://soriwear.ch",
 
   /* E-mail de la marque : reçoit les commandes (mode pré-commande),
      les messages du formulaire de contact et les inscriptions

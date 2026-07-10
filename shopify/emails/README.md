@@ -32,8 +32,7 @@ sont déjà en place.
 ## À savoir
 
 - **`bienvenue-compte.html`** : le bouton « Accéder à mon compte » pointe vers la page
-  compte DU SITE (`https://procaetanodany-ux.github.io/Marque-s/compte/`).
-  Quand tu auras ton domaine (ex. soriwear.ch), remplace cette URL dans le fichier.
+  compte DU SITE : `https://soriwear.ch/compte/`.
 - **`reinitialisation-mdp.html`** : ne touche jamais à `{{ customer.reset_password_url }}` —
   c'est le lien sécurisé généré par Shopify.
 - **`facture-commande.html`** : cet e-mail part quand tu envoies une facture depuis une
