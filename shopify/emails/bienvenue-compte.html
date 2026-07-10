@@ -1,0 +1,95 @@
+{% comment %}
+  SORI — BIENVENUE (création du compte client)
+  Coller dans : Réglages → Notifications → Bienvenue du compte client → Modifier le code
+  Objet suggéré : Bienvenue chez SORI® — ton compte est prêt
+  NOTE : le bouton pointe vers la page compte DU SITE (pas Shopify).
+  Quand tu auras ton domaine (ex. soriwear.ch), remplace l'URL ci-dessous.
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
+<title>Bienvenue chez SORI</title>
+<style>
+  body { margin:0; padding:0; background:#111111; -webkit-text-size-adjust:100%; }
+  a { color:#d8f000; }
+  .btn a { color:#0a0a0a !important; text-decoration:none !important; }
+  @media (max-width:620px){ .container{width:100% !important} .px{padding-left:20px !important;padding-right:20px !important} }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#111111;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#111111;">
+<tr><td align="center" style="padding:24px 12px;">
+  <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:#0a0a0a;border:2px solid #fafafa;">
+
+    <tr><td align="center" style="background:#d8f000;padding:9px 24px;font:700 11px/1.4 Arial,Helvetica,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#0a0a0a;">
+      Bienvenue dans la rue &nbsp;★&nbsp; Compte activ&eacute;
+    </td></tr>
+
+    <tr><td class="px" style="padding:40px 40px 0;" align="center">
+      <span style="font:900 54px/1 'Arial Black',Arial,Helvetica,sans-serif;color:#fafafa;letter-spacing:2px;">SORI<span style="color:#d8f000;font-size:24px;">&reg;</span></span>
+      <p style="margin:10px 0 0;font:700 11px/1 Arial,Helvetica,sans-serif;letter-spacing:3px;text-transform:uppercase;color:#d8f000;">Porte la rue. Pas la mode.</p>
+    </td></tr>
+
+    <tr><td class="px" style="padding:30px 40px 8px;" align="center">
+      <h1 style="margin:0;font:900 28px/1.15 'Arial Black',Arial,Helvetica,sans-serif;color:#fafafa;text-transform:uppercase;">
+        {% if customer.first_name %}{{ customer.first_name }},{% endif %}<br>
+        tu fais partie <span style="color:#d8f000;">du crew.</span>
+      </h1>
+    </td></tr>
+
+    <tr><td class="px" style="padding:8px 40px 26px;" align="center">
+      <p style="margin:0;font:400 15px/1.7 Arial,Helvetica,sans-serif;color:#cfcfcf;">
+        Ton compte SORI est pr&ecirc;t. D&egrave;s maintenant&nbsp;: commande en 2 clics,
+        suivi de tes pi&egrave;ces, adresses enregistr&eacute;es — et l&rsquo;acc&egrave;s
+        aux drops avant qu&rsquo;ils partent. Parce qu&rsquo;ils partent.
+      </p>
+    </td></tr>
+
+    <tr><td class="px" style="padding:0 40px 30px;" align="center">
+      <table role="presentation" cellpadding="0" cellspacing="0" align="center"><tr><td class="btn" bgcolor="#d8f000" style="border:2px solid #d8f000;">
+        <a href="https://procaetanodany-ux.github.io/Marque-s/compte/" style="display:inline-block;padding:15px 34px;font:900 14px/1 'Arial Black',Arial,Helvetica,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#0a0a0a !important;text-decoration:none;">Acc&eacute;der &agrave; mon compte &rarr;</a>
+      </td></tr></table>
+    </td></tr>
+
+    <!-- les règles du jeu -->
+    <tr><td class="px" style="padding:0 40px 32px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #2a2a2a;">
+        <tr>
+          <td style="padding:14px 18px;border-bottom:1px solid #2a2a2a;font:400 13px/1.6 Arial,Helvetica,sans-serif;color:#cfcfcf;">
+            <span style="font:900 13px 'Arial Black',Arial,sans-serif;color:#d8f000;">01</span>&nbsp;&nbsp;
+            <strong style="color:#fafafa;text-transform:uppercase;">&Eacute;ditions limit&eacute;es.</strong> Chaque pi&egrave;ce est tir&eacute;e en quantit&eacute; fixe.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:14px 18px;border-bottom:1px solid #2a2a2a;font:400 13px/1.6 Arial,Helvetica,sans-serif;color:#cfcfcf;">
+            <span style="font:900 13px 'Arial Black',Arial,sans-serif;color:#d8f000;">02</span>&nbsp;&nbsp;
+            <strong style="color:#fafafa;text-transform:uppercase;">Aucun restock.</strong> Parti = parti. Jamais deux fois la m&ecirc;me.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:14px 18px;font:400 13px/1.6 Arial,Helvetica,sans-serif;color:#cfcfcf;">
+            <span style="font:900 13px 'Arial Black',Arial,sans-serif;color:#d8f000;">03</span>&nbsp;&nbsp;
+            <strong style="color:#fafafa;text-transform:uppercase;">Les inscrits d&rsquo;abord.</strong> Tu sauras avant tout le monde.
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+
+    <tr><td class="px" style="padding:24px 40px 30px;border-top:2px solid #2a2a2a;">
+      <p style="margin:0 0 4px;font:900 15px/1 'Arial Black',Arial,Helvetica,sans-serif;color:#fafafa;text-transform:uppercase;">SORI<span style="color:#d8f000;">&reg;</span></p>
+      <p style="margin:0 0 12px;font:700 10px/1.6 Arial,Helvetica,sans-serif;color:#9a9a9a;letter-spacing:1.5px;text-transform:uppercase;">Streetwear brut — Suisse</p>
+      <p style="margin:0;font:400 12px/1.7 Arial,Helvetica,sans-serif;color:#9a9a9a;">
+        Une question ? &Eacute;cris-nous :
+        <a href="mailto:{{ shop.email }}" style="color:#d8f000;">{{ shop.email }}</a><br>
+        Tu re&ccedil;ois cet e-mail parce qu&rsquo;un compte a &eacute;t&eacute; cr&eacute;&eacute; avec cette adresse.
+      </p>
+    </td></tr>
+
+  </table>
+</td></tr></table>
+</body>
+</html>

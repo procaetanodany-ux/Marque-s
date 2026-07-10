@@ -1,3 +1,8 @@
+{% comment %}
+  SORI — CONFIRMATION DE COMMANDE
+  Coller dans : Réglages → Notifications → Confirmation de commande → Modifier le code
+  Objet suggéré : SORI® — Commande {{ name }} confirmée
+{% endcomment %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -20,7 +25,7 @@
 
     <!-- bandeau acide -->
     <tr><td align="center" style="background:#d8f000;padding:9px 24px;font:700 11px/1.4 Arial,Helvetica,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#0a0a0a;">
-      Pièces limitées &nbsp;★&nbsp; Aucun restock &nbsp;★&nbsp; Commande #1001
+      Pièces limitées &nbsp;★&nbsp; Aucun restock &nbsp;★&nbsp; Commande {{ name }}
     </td></tr>
 
     <!-- logo -->
@@ -37,8 +42,8 @@
 
     <tr><td class="px" style="padding:8px 40px 24px;">
       <p style="margin:0;font:400 15px/1.7 Arial,Helvetica,sans-serif;color:#cfcfcf;">
-        Dany, merci d&rsquo;avoir choisi la rue.
-        Ta commande <strong style="color:#fafafa;">#1001</strong> est enregistr&eacute;e —
+        {% if customer.first_name %}{{ customer.first_name }}, m{% else %}M{% endif %}erci d&rsquo;avoir choisi la rue.
+        Ta commande <strong style="color:#fafafa;">{{ name }}</strong> est enregistr&eacute;e —
         on la pr&eacute;pare et tu re&ccedil;ois un e-mail d&egrave;s qu&rsquo;elle part, avec le num&eacute;ro de suivi.
       </p>
     </td></tr>
@@ -46,7 +51,7 @@
     <!-- bouton statut -->
     <tr><td class="px" style="padding:0 40px 30px;">
       <table role="presentation" cellpadding="0" cellspacing="0"><tr><td class="btn" bgcolor="#d8f000" style="border:2px solid #d8f000;">
-        <a href="#" style="display:inline-block;padding:14px 30px;font:900 14px/1 'Arial Black',Arial,Helvetica,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#0a0a0a !important;text-decoration:none;">Suivre ma commande &rarr;</a>
+        <a href="{{ order_status_url }}" style="display:inline-block;padding:14px 30px;font:900 14px/1 'Arial Black',Arial,Helvetica,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#0a0a0a !important;text-decoration:none;">Suivre ma commande &rarr;</a>
       </td></tr></table>
     </td></tr>
 
@@ -54,51 +59,66 @@
     <tr><td class="px" style="padding:0 40px;">
       <p style="margin:0 0 4px;font:700 12px/1 Arial,Helvetica,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#9a9a9a;border-bottom:2px solid #fafafa;padding-bottom:10px;">Ta pi&egrave;ce</p>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        {% for line in subtotal_line_items %}
         <tr><td style="padding:14px 0;border-bottom:1px solid #2a2a2a;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-            <td width="64" valign="top"><img src="https://procaetanodany-ux.github.io/Marque-s/products/le-spray-back.webp" width="56" height="56" alt="" style="display:block;border:1px solid #2a2a2a;"></td>
+            {% if line.image %}
+            <td width="64" valign="top"><img src="{{ line | img_url: 'compact_cropped' }}" width="56" height="56" alt="" style="display:block;border:1px solid #2a2a2a;"></td>
+            {% endif %}
             <td valign="top" style="font:700 14px/1.5 Arial,Helvetica,sans-serif;color:#fafafa;text-transform:uppercase;">
-              La signature
-              <br><span style="font:400 12px/1.5 Arial,Helvetica,sans-serif;color:#9a9a9a;text-transform:none;">Taille L</span><br><span style="font:400 12px/1.5 Arial,Helvetica,sans-serif;color:#9a9a9a;text-transform:none;">Quantit&eacute; : 1</span>
+              {{ line.title }}
+              {% if line.variant.title != 'Default Title' %}<br><span style="font:400 12px/1.5 Arial,Helvetica,sans-serif;color:#9a9a9a;text-transform:none;">Taille {{ line.variant.title }}</span>{% endif %}
+              <br><span style="font:400 12px/1.5 Arial,Helvetica,sans-serif;color:#9a9a9a;text-transform:none;">Quantit&eacute; : {{ line.quantity }}</span>
             </td>
-            <td valign="top" align="right" style="font:700 14px/1.5 Arial,Helvetica,sans-serif;color:#fafafa;white-space:nowrap;">43.99 CHF</td>
+            <td valign="top" align="right" style="font:700 14px/1.5 Arial,Helvetica,sans-serif;color:#fafafa;white-space:nowrap;">{{ line.final_line_price | money }}</td>
           </tr></table>
         </td></tr>
-        </table>
+        {% endfor %}
+      </table>
     </td></tr>
 
     <!-- totaux -->
     <tr><td class="px" style="padding:16px 40px 30px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font:400 13px/2 Arial,Helvetica,sans-serif;color:#cfcfcf;">
-        <tr><td>Sous-total</td><td align="right">43.99 CHF</td></tr>
-        
-        <tr><td>Livraison (Standard suivi)</td><td align="right">6.90 CHF</td></tr>
+        <tr><td>Sous-total</td><td align="right">{{ subtotal_price | money }}</td></tr>
+        {% if total_discounts > 0 %}
+        <tr><td style="color:#d8f000;">Remise</td><td align="right" style="color:#d8f000;">&minus;{{ total_discounts | money }}</td></tr>
+        {% endif %}
+        {% for shipping_method in shipping_methods %}
+        <tr><td>Livraison ({{ shipping_method.title }})</td><td align="right">{{ shipping_method.price | money }}</td></tr>
+        {% endfor %}
+        {% if total_tax > 0 %}
+        <tr><td>Taxes</td><td align="right">{{ total_tax | money }}</td></tr>
+        {% endif %}
         <tr>
           <td style="padding-top:10px;border-top:2px solid #fafafa;font:900 16px/1.4 'Arial Black',Arial,Helvetica,sans-serif;color:#fafafa;text-transform:uppercase;">Total</td>
-          <td align="right" style="padding-top:10px;border-top:2px solid #fafafa;font:900 18px/1.4 'Arial Black',Arial,Helvetica,sans-serif;color:#d8f000;">50.89 CHF</td>
+          <td align="right" style="padding-top:10px;border-top:2px solid #fafafa;font:900 18px/1.4 'Arial Black',Arial,Helvetica,sans-serif;color:#d8f000;">{{ total_price | money }}</td>
         </tr>
       </table>
     </td></tr>
 
     <!-- adresse -->
+    {% if shipping_address %}
     <tr><td class="px" style="padding:0 40px 32px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:1px solid #2a2a2a;padding:16px 20px;">
         <p style="margin:0 0 6px;font:700 11px/1 Arial,Helvetica,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#9a9a9a;">Livraison &agrave;</p>
         <p style="margin:0;font:400 13px/1.7 Arial,Helvetica,sans-serif;color:#cfcfcf;">
-          Dany C.<br>
-          Rue de la Gare 12<br>
-          1003 Lausanne<br>
-          Suisse
+          {{ shipping_address.name }}<br>
+          {{ shipping_address.street }}<br>
+          {{ shipping_address.zip }} {{ shipping_address.city }}{% if shipping_address.province %}, {{ shipping_address.province }}{% endif %}<br>
+          {{ shipping_address.country }}
         </p>
       </td></tr></table>
     </td></tr>
+    {% endif %}
+
     <!-- footer -->
     <tr><td class="px" style="padding:24px 40px 30px;border-top:2px solid #2a2a2a;">
       <p style="margin:0 0 4px;font:900 15px/1 'Arial Black',Arial,Helvetica,sans-serif;color:#fafafa;text-transform:uppercase;">SORI<span style="color:#d8f000;">&reg;</span></p>
       <p style="margin:0 0 12px;font:700 10px/1.6 Arial,Helvetica,sans-serif;color:#9a9a9a;letter-spacing:1.5px;text-transform:uppercase;">Porte la rue. Pas la mode.</p>
       <p style="margin:0;font:400 12px/1.7 Arial,Helvetica,sans-serif;color:#9a9a9a;">
         Une question sur ta commande ? &Eacute;cris-nous :
-        <a href="mailto:pro.caetanodany@gmail.com" style="color:#d8f000;">pro.caetanodany@gmail.com</a><br>
+        <a href="mailto:{{ shop.email }}" style="color:#d8f000;">{{ shop.email }}</a><br>
         &copy; SORI — Suisse. &Eacute;ditions limit&eacute;es, aucun restock.
       </p>
     </td></tr>

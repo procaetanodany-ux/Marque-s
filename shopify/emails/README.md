@@ -1,48 +1,56 @@
 # E-mails Shopify aux couleurs SORI
 
-Objectif : que tous les e-mails automatiques (confirmation de compte, de commande,
-d'expédition, etc.) soient en **noir + jaune acide** au lieu du bleu Shopify standard.
+Six e-mails automatiques **entièrement personnalisés** (noir + jaune acide, ton SORI),
+prêts à coller dans l'admin Shopify. Chaque fichier remplace TOUT le code du modèle
+correspondant — les variables `{{ ... }}` (montants, articles, suivi, liens sécurisés)
+sont déjà en place.
 
-Sur le plan Basic, ces e-mails ne se modifient pas par l'API : ça se fait dans l'admin,
-en 2 étapes.
+## Les 6 modèles
 
-## Étape 1 — Branding global (2 min, couvre TOUS les e-mails)
+| Fichier | Modèle Shopify (Réglages → Notifications) | Objet suggéré |
+|---|---|---|
+| `confirmation-commande.html` | **Confirmation de commande** | `SORI® — Commande {{ name }} confirmée` |
+| `confirmation-expedition.html` | **Confirmation d'expédition** | `SORI® — Ta commande {{ name }} est en route` |
+| `facture-commande.html` | **Facture de la commande** | `SORI® — Facture {{ name }}` |
+| `commande-annulee.html` | **Commande annulée** | `SORI® — Commande {{ name }} annulée` |
+| `bienvenue-compte.html` | **Bienvenue du compte client** (ou « Confirmation du compte client ») | `Bienvenue chez SORI® — ton compte est prêt` |
+| `reinitialisation-mdp.html` | **Réinitialisation du mot de passe client** | `SORI® — Réinitialise ton mot de passe` |
 
-**Admin Shopify → Réglages → Notifications → « Personnaliser » (en haut) :**
-- **Logo** : ajoute le logo SORI
-- **Couleur d'accentuation** : `#D8F000` (jaune acide)
+## Installation (2 min par e-mail)
 
-À lui seul, ça change le logo + la couleur des boutons dans **tous** les e-mails.
+1. **Admin Shopify → Réglages → Notifications** (section « Notifications aux clients »)
+2. Clique le modèle (ex. « Confirmation de commande »)
+3. Bouton **« Modifier le code »**
+4. **Sélectionne tout le code existant** (Ctrl/Cmd+A) et **remplace-le** par le contenu
+   du fichier correspondant de ce dossier
+5. Remplace aussi l'**objet** de l'e-mail par l'objet suggéré du tableau
+6. Clique **« Aperçu »** pour vérifier, puis **Enregistrer**
 
-## Étape 2 — Skin noir complet (optionnel, par e-mail)
+> 💡 En cas de doute, Shopify garde un bouton **« Rétablir la valeur par défaut »**
+> sur chaque modèle : tu peux toujours revenir en arrière. Zéro risque.
 
-Pour aller au bout (fond noir, typo, tableaux), colle le bloc du fichier
-`sori-notification-style.html` dans chaque modèle :
+## À savoir
 
-1. **Réglages → Notifications** → clique un e-mail (ex. « Confirmation de commande »)
-2. Bouton **« Modifier le code »**
-3. Trouve la balise `</style>` (vers le haut du code) et **colle le bloc juste avant**
-4. **Enregistrer**
+- **`bienvenue-compte.html`** : le bouton « Accéder à mon compte » pointe vers la page
+  compte DU SITE (`https://procaetanodany-ux.github.io/Marque-s/compte/`).
+  Quand tu auras ton domaine (ex. soriwear.ch), remplace cette URL dans le fichier.
+- **`reinitialisation-mdp.html`** : ne touche jamais à `{{ customer.reset_password_url }}` —
+  c'est le lien sécurisé généré par Shopify.
+- **`facture-commande.html`** : cet e-mail part quand tu envoies une facture depuis une
+  commande provisoire (Commandes → Commandes provisoires → Envoyer la facture).
+- Les e-mails sont sombres par design. Quelques très vieux clients mail (anciens Outlook)
+  simplifient le rendu, mais le contenu et les liens restent parfaitement lisibles.
+- Aperçu local : ouvre `preview-order-confirmation.html` dans un navigateur pour voir le
+  rendu de la confirmation de commande avec des données d'exemple.
 
-Le bloc ne touche qu'au style : les variables `{{ ... }}` (montants, articles,
-adresse…) restent intactes. Zéro risque de casser une commande.
+## Branding global (à faire une fois, en complément)
 
-## Les e-mails que le client voit le plus (à faire en priorité)
+**Réglages → Notifications → « Personnaliser »** : ajoute le logo SORI et la couleur
+d'accentuation `#D8F000`. Ça couvre les e-mails que tu n'as pas personnalisés
+(sortie pour livraison, remboursement, etc.).
 
-| Modèle Shopify | Quand |
-|---|---|
-| Confirmation du compte client | à la création de compte |
-| Réinitialisation du mot de passe | mot de passe oublié |
-| **Confirmation de commande** | après un achat ← le plus important |
-| Confirmation d'expédition | quand tu expédies |
-| Mise à jour d'expédition / Sortie pour livraison / Livré | suivi |
-| Commande annulée / Remboursement | SAV |
+## L'ancien « skin » (`sori-notification-style.html`)
 
-Les autres modèles (brouillon, reçu POS, etc.) sont rarement vus : applique le même
-bloc si tu veux, ou laisse le branding de l'étape 1 faire le travail.
-
-## Bon à savoir
-- Quelques clients anciens (vieux Outlook) ignorent le `<style>` : l'e-mail retombe
-  alors sur le style clair Shopify avec ton logo + accent acide (étape 1). C'est propre
-  dans tous les cas.
-- Aperçu du rendu : `preview-order-confirmation.html` (ouvre-le dans un navigateur).
+Conservé pour référence : c'était la V1 (un bloc CSS à coller dans les modèles d'origine).
+Les 6 modèles complets ci-dessus le remplacent avantageusement — utilise le skin seulement
+pour les notifications secondaires que tu veux assombrir sans les réécrire.

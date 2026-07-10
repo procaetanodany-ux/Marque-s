@@ -1,0 +1,77 @@
+{% comment %}
+  SORI — RÉINITIALISATION DU MOT DE PASSE
+  Coller dans : Réglages → Notifications → Réinitialisation du mot de passe client → Modifier le code
+  Objet suggéré : SORI® — Réinitialise ton mot de passe
+  IMPORTANT : garder {{ customer.reset_password_url }} tel quel (lien sécurisé Shopify).
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
+<title>Réinitialisation du mot de passe</title>
+<style>
+  body { margin:0; padding:0; background:#111111; -webkit-text-size-adjust:100%; }
+  a { color:#d8f000; }
+  .btn a { color:#0a0a0a !important; text-decoration:none !important; }
+  @media (max-width:620px){ .container{width:100% !important} .px{padding-left:20px !important;padding-right:20px !important} }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#111111;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#111111;">
+<tr><td align="center" style="padding:24px 12px;">
+  <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:#0a0a0a;border:2px solid #fafafa;">
+
+    <tr><td align="center" style="background:#d8f000;padding:9px 24px;font:700 11px/1.4 Arial,Helvetica,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#0a0a0a;">
+      S&eacute;curit&eacute; du compte &nbsp;★&nbsp; SORI
+    </td></tr>
+
+    <tr><td class="px" style="padding:36px 40px 0;">
+      <span style="font:900 34px/1 'Arial Black',Arial,Helvetica,sans-serif;color:#fafafa;letter-spacing:1px;">SORI<span style="color:#d8f000;font-size:16px;">&reg;</span></span>
+    </td></tr>
+
+    <tr><td class="px" style="padding:26px 40px 8px;">
+      <h1 style="margin:0;font:900 30px/1.1 'Arial Black',Arial,Helvetica,sans-serif;color:#fafafa;text-transform:uppercase;">
+        Mot de passe<br><span style="color:#d8f000;">oubli&eacute; ?</span>
+      </h1>
+    </td></tr>
+
+    <tr><td class="px" style="padding:8px 40px 26px;">
+      <p style="margin:0;font:400 15px/1.7 Arial,Helvetica,sans-serif;color:#cfcfcf;">
+        {% if customer.first_name %}{{ customer.first_name }}, &ccedil;{% else %}&Ccedil;{% endif %}a arrive m&ecirc;me aux meilleurs.
+        Clique ci-dessous pour en choisir un nouveau — le lien est valable quelques heures.
+      </p>
+    </td></tr>
+
+    <tr><td class="px" style="padding:0 40px 26px;">
+      <table role="presentation" cellpadding="0" cellspacing="0"><tr><td class="btn" bgcolor="#d8f000" style="border:2px solid #d8f000;">
+        <a href="{{ customer.reset_password_url }}" style="display:inline-block;padding:15px 32px;font:900 14px/1 'Arial Black',Arial,Helvetica,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#0a0a0a !important;text-decoration:none;">R&eacute;initialiser mon mot de passe &rarr;</a>
+      </td></tr></table>
+    </td></tr>
+
+    <tr><td class="px" style="padding:0 40px 32px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="border:1px solid #2a2a2a;padding:14px 18px;">
+        <p style="margin:0;font:400 12px/1.7 Arial,Helvetica,sans-serif;color:#9a9a9a;">
+          <strong style="color:#fafafa;">Tu n&rsquo;as rien demand&eacute; ?</strong>
+          Ignore simplement cet e-mail — ton mot de passe actuel reste inchang&eacute;
+          et personne ne peut acc&eacute;der &agrave; ton compte sans ce lien.
+        </p>
+      </td></tr></table>
+    </td></tr>
+
+    <tr><td class="px" style="padding:24px 40px 30px;border-top:2px solid #2a2a2a;">
+      <p style="margin:0 0 4px;font:900 15px/1 'Arial Black',Arial,Helvetica,sans-serif;color:#fafafa;text-transform:uppercase;">SORI<span style="color:#d8f000;">&reg;</span></p>
+      <p style="margin:0 0 12px;font:700 10px/1.6 Arial,Helvetica,sans-serif;color:#9a9a9a;letter-spacing:1.5px;text-transform:uppercase;">Porte la rue. Pas la mode.</p>
+      <p style="margin:0;font:400 12px/1.7 Arial,Helvetica,sans-serif;color:#9a9a9a;">
+        Besoin d&rsquo;aide ? &Eacute;cris-nous :
+        <a href="mailto:{{ shop.email }}" style="color:#d8f000;">{{ shop.email }}</a><br>
+        &copy; SORI — Suisse.
+      </p>
+    </td></tr>
+
+  </table>
+</td></tr></table>
+</body>
+</html>
