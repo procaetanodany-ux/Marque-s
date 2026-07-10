@@ -15,14 +15,14 @@ export const site = {
   /* E-mail de la marque : reçoit les commandes (mode pré-commande),
      les messages du formulaire de contact et les inscriptions
      newsletter. Affiché sur la page contact. */
-  contactEmail: "pro.caetanodany@gmail.com",
+  contactEmail: "contact@soriwear.ch",
 
   /* Formulaires (contact + newsletter) : envoyés via FormSubmit,
      un relais gratuit sans compte. IMPORTANT — à la première
      soumission, FormSubmit t'enverra UN e-mail de confirmation :
      clique le lien dedans une fois, et tous les formulaires du site
      arriveront ensuite directement dans ta boîte. */
-  formEndpoint: "https://formsubmit.co/ajax/pro.caetanodany@gmail.com",
+  formEndpoint: "https://formsubmit.co/ajax/contact@soriwear.ch",
 
   /* ---- BANDEAU D'ANNONCE (ticker en haut de toutes les pages) ----
      Pour faire une annonce : passe enabled à true et édite messages.
