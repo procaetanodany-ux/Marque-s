@@ -48,6 +48,7 @@ export default function AddToCart({ product }: { product: Product }) {
       name: product.name,
       size,
       price: product.price,
+      maxQuantity: variant.maxQuantity,
       image: product.images[0],
     });
   };

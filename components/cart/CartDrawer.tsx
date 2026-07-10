@@ -105,28 +105,41 @@ export default function CartDrawer() {
                       <div className="flex flex-1 flex-col gap-1">
                         <p className="font-display text-base uppercase leading-tight">{l.name}</p>
                         <p className="text-xs text-dim">Taille {l.size}</p>
-                        <div className="mt-auto flex items-center justify-between">
-                          <div className="flex items-center border-2 border-paper">
-                            <button
-                              onClick={() => setQuantity(l.variantId, l.quantity - 1)}
-                              aria-label={`Réduire la quantité de ${l.name}`}
-                              className="grid h-8 w-8 place-items-center hover:bg-acid hover:text-ink"
-                            >
-                              −
-                            </button>
-                            <span className="w-8 text-center text-sm tabular-nums">{l.quantity}</span>
-                            <button
-                              onClick={() => setQuantity(l.variantId, l.quantity + 1)}
-                              aria-label={`Augmenter la quantité de ${l.name}`}
-                              className="grid h-8 w-8 place-items-center hover:bg-acid hover:text-ink"
-                            >
-                              +
-                            </button>
-                          </div>
-                          <span className="font-bold tabular-nums">
-                            {formatPrice({ amount: l.price.amount * l.quantity, currencyCode: l.price.currencyCode })}
-                          </span>
-                        </div>
+                        {(() => {
+                          const atMax = typeof l.maxQuantity === "number" && l.quantity >= l.maxQuantity;
+                          return (
+                            <>
+                              <div className="mt-auto flex items-center justify-between">
+                                <div className="flex items-center border-2 border-paper">
+                                  <button
+                                    onClick={() => setQuantity(l.variantId, l.quantity - 1)}
+                                    aria-label={`Réduire la quantité de ${l.name}`}
+                                    className="grid h-8 w-8 place-items-center hover:bg-acid hover:text-ink"
+                                  >
+                                    −
+                                  </button>
+                                  <span className="w-8 text-center text-sm tabular-nums">{l.quantity}</span>
+                                  <button
+                                    onClick={() => setQuantity(l.variantId, l.quantity + 1)}
+                                    disabled={atMax}
+                                    aria-label={`Augmenter la quantité de ${l.name}`}
+                                    className="grid h-8 w-8 place-items-center hover:bg-acid hover:text-ink disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-current"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                                <span className="font-bold tabular-nums">
+                                  {formatPrice({ amount: l.price.amount * l.quantity, currencyCode: l.price.currencyCode })}
+                                </span>
+                              </div>
+                              {atMax && (
+                                <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-acid">
+                                  Stock max — {l.maxQuantity} en stock
+                                </p>
+                              )}
+                            </>
+                          );
+                        })()}
                       </div>
                       <button
                         onClick={() => removeLine(l.variantId)}

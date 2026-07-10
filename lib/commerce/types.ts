@@ -9,6 +9,9 @@ export type Variant = {
   id: string; // local : "tee-le-spray-m" — sera remplacé par le GID Shopify
   size: string;
   available: boolean;
+  /* Stock réel Shopify (quantityAvailable). Défini seulement si le droit
+     unauthenticated_read_product_inventory est activé sur le jeton. */
+  maxQuantity?: number;
   /* À remplir lors du branchement Shopify (gid://shopify/ProductVariant/…) */
   shopifyVariantId?: string;
 };
@@ -37,6 +40,8 @@ export type CartLine = {
   size: string;
   price: Money;
   quantity: number;
+  /* Plafond de stock Shopify pour cette variante (si connu). */
+  maxQuantity?: number;
   image?: string;
 };
 

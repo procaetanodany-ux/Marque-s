@@ -27,6 +27,10 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 const STORAGE_KEY = "sori-cart-v1";
 
+/* Plafonne une quantité au stock réel Shopify quand il est connu. */
+const capQty = (q: number, max?: number) =>
+  typeof max === "number" ? Math.max(1, Math.min(q, max)) : q;
+
 export function CartProvider({ children }: { children: ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -53,11 +57,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setLines((prev) => {
       const existing = prev.find((l) => l.variantId === line.variantId);
       if (existing) {
+        /* on rafraîchit maxQuantity (le stock a pu changer) et on plafonne */
         return prev.map((l) =>
-          l.variantId === line.variantId ? { ...l, quantity: l.quantity + 1 } : l,
+          l.variantId === line.variantId
+            ? { ...l, maxQuantity: line.maxQuantity, quantity: capQty(l.quantity + 1, line.maxQuantity) }
+            : l,
         );
       }
-      return [...prev, { ...line, quantity: 1 }];
+      return [...prev, { ...line, quantity: capQty(1, line.maxQuantity) }];
     });
     setIsOpen(true);
   }, []);
@@ -66,7 +73,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setLines((prev) =>
       quantity <= 0
         ? prev.filter((l) => l.variantId !== variantId)
-        : prev.map((l) => (l.variantId === variantId ? { ...l, quantity } : l)),
+        : prev.map((l) =>
+            l.variantId === variantId ? { ...l, quantity: capQty(quantity, l.maxQuantity) } : l,
+          ),
     );
   }, []);
 

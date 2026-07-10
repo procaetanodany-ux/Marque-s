@@ -12,14 +12,37 @@
 
 import { useEffect, useState } from "react";
 import { storefront, shopifyConfigured, shopifyDemo } from "./shopify";
-import { PRODUCTS_QUERY, mapProduct, type ShopifyProductNode } from "./catalog";
+import {
+  PRODUCTS_QUERY,
+  INVENTORY_QUERY,
+  mapProduct,
+  applyInventory,
+  type ShopifyProductNode,
+  type ShopifyInventoryNode,
+} from "./catalog";
 import type { Product } from "./types";
 
 const live = shopifyConfigured && !shopifyDemo;
 
+/* Stock réel : requête tolérante. Si le droit d'inventaire n'est pas activé
+   sur le jeton, elle échoue → on renvoie une liste vide (aucun plafond). */
+async function fetchInventory(): Promise<ShopifyInventoryNode[]> {
+  try {
+    const data = await storefront<{ products: { nodes: ShopifyInventoryNode[] } }>(INVENTORY_QUERY, {});
+    return data.products.nodes;
+  } catch {
+    return [];
+  }
+}
+
 async function fetchLiveCatalog(): Promise<Product[]> {
-  const data = await storefront<{ products: { nodes: ShopifyProductNode[] } }>(PRODUCTS_QUERY, {});
-  return data.products.nodes.map(mapProduct);
+  const [catalog, inventory] = await Promise.all([
+    storefront<{ products: { nodes: ShopifyProductNode[] } }>(PRODUCTS_QUERY, {}).then((d) =>
+      d.products.nodes.map(mapProduct),
+    ),
+    fetchInventory(),
+  ]);
+  return applyInventory(catalog, inventory);
 }
 
 /* Rafraîchit tout le catalogue. Part des données du build (affichage

@@ -91,6 +91,45 @@ export function mapProduct(node: ShopifyProductNode, index: number): Product {
   };
 }
 
+/* ---- STOCK RÉEL (quantityAvailable) ----
+   Requête SÉPARÉE, volontairement isolée du catalogue principal : le champ
+   quantityAvailable exige le droit Storefront « unauthenticated_read_product_inventory ».
+   Tant que ce droit n'est pas activé, la requête échoue — on l'ignore sans
+   casser l'affichage. Dès qu'il est activé, le stock plafonne le panier. */
+export const INVENTORY_QUERY = `query {
+  products(first: 50, sortKey: CREATED_AT, reverse: true) {
+    nodes {
+      handle
+      variants(first: 20) { nodes { id quantityAvailable } }
+    }
+  }
+}`;
+
+export type ShopifyInventoryNode = {
+  handle: string;
+  variants: { nodes: { id: string; quantityAvailable: number | null }[] };
+};
+
+/* Enrichit les variantes avec le stock réel (maxQuantity) et masque celles
+   à zéro. Sans effet si l'inventaire n'est pas lisible (droit non activé). */
+export function applyInventory(products: Product[], nodes: ShopifyInventoryNode[]): Product[] {
+  const stock = new Map<string, number>();
+  for (const n of nodes) {
+    for (const v of n.variants.nodes) {
+      if (typeof v.quantityAvailable === "number") stock.set(v.id, v.quantityAvailable);
+    }
+  }
+  if (!stock.size) return products;
+  return products.map((p) => ({
+    ...p,
+    variants: p.variants.map((v) => {
+      const q = stock.get(v.shopifyVariantId ?? v.id);
+      if (q === undefined) return v;
+      return { ...v, maxQuantity: q, available: v.available && q > 0 };
+    }),
+  }));
+}
+
 /* Récupéré une seule fois par build, partagé entre toutes les pages. */
 let cache: Product[] | null = null;
 
